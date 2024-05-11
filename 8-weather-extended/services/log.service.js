@@ -42,7 +42,7 @@ const showSetting = async (storageData, language) => {
 	console.log(
 		dedent`${chalk.bgCyan(' Current settings ')}
 		${token}: ${storageData[TOKEN_DICTIONARY.token] ?? notFound}
-		${city}: ${storageData[TOKEN_DICTIONARY.city] ?? notFound}
+		${city}: ${storageData[TOKEN_DICTIONARY.city].join(',') ?? notFound}
 		${lang}: ${storageData[TOKEN_DICTIONARY.lang] ?? notFound}
 		`
 	);

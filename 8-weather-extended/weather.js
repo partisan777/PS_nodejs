@@ -59,11 +59,13 @@ const saveLanguage = async (lang) => {
 
 const getForcast = async () => {
 	try {		
-		const city = process.env.CITY ?? await getKeyValue(TOKEN_DICTIONARY.city);
+		const cities = process.env.CITY ?? await getKeyValue(TOKEN_DICTIONARY.city);
 		const token = process.env.TOKEN ?? await getKeyValue(TOKEN_DICTIONARY.token);
 		const units = 'metric';
-		const weather = await getWeather(city, token, language, units);
-		printWeather(weather, getIcon(weather.weather[0].icon), language);
+		for (let i = 0; cities.length > i; i++ ) {
+			const weather = await getWeather(cities[i], token, language, units);
+			printWeather(weather, getIcon(weather.weather[0].icon), language);
+		}
 	} catch (e) {
 		if (e?.response?.status == 404) {
 			printError(cityIncorrect);

@@ -1,18 +1,25 @@
 const getArgs = (args) => {
-	const res = {};
+
 	const [executer, file, ...rest] = args;
-	rest.forEach((value, index, array) => {
-		if (value.charAt(0) == '-') {
-			if (index == array.length - 1) {
-				res[value.substring(1)] = true;
-			} else if (array[index + 1].charAt(0) != '-') {
-				res[value.substring(1)] = array[index + 1];
-			} else {
-				res[value.substring(1)] = true;
-			}
+	let arrSettingKeys = [];
+	let res = {};
+	//собираем ключи
+	for (let i = 0; i < rest.length; i++ ) {
+		if (rest[i].charAt(0) === '-') {
+			arrSettingKeys.push(i);
+		};
+	};
+  
+	for (let i = 0; i < arrSettingKeys.length; i++ ) {
+		if (rest[arrSettingKeys[i]] === '-c') {
+			res[rest[arrSettingKeys[i]].substring(1)] = rest.slice(arrSettingKeys[i]+1, arrSettingKeys[i+1]);
+			continue
+		} else {
+			res[rest[arrSettingKeys[i]].substring(1)] = rest[arrSettingKeys[i]+1] ?? true;
 		}
-	});
-	return res;
+	};
+  
+  	return res
 };
 
 export { getArgs }
