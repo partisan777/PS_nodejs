@@ -43,4 +43,4 @@ const isExist = async (path) => {
 	}
 };
 
-export { saveKeyValue, getKeyValue, TOKEN_DICTIONARY, getStortage };
+export { saveKeyValue, getKeyValue, getStortage };

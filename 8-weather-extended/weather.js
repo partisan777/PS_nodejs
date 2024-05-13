@@ -6,10 +6,8 @@ import { saveKeyValue, getKeyValue, getStortage } from './services/storage.servi
 import { LANGUAGE_LOG_PACK, TOKEN_DICTIONARY } from './dictionares/dictionares.js';
 
 
-//35d7bc54a5e17383c4e9df5b73a2fb6a
 // определяем язык. если не определен ставим английский
 const language = await getKeyValue(TOKEN_DICTIONARY.lang) ?? 'en';		
-// const language = 'en';		
 
 const { tokenNotTransf, tokenSaved, cityNotTranf, citySaved, langNotTranf, incorrectLanguage, langSaved, cityIncorrect, tokenIncorrect } = LANGUAGE_LOG_PACK[language];
 
