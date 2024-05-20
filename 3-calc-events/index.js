@@ -4,11 +4,6 @@ const division = require('./functions/division');
 const multiplication = require('./functions/multiplication');
 const subtraction = require('./functions/subtraction');
 
-const firstNum  = +process.argv[2];
-const secondNum = +process.argv[3];
-const operation =  process.argv[4].replace('index.js', '*'); //при передаче * приходит значение functions как санитайзить значения пока не зачем
-
-
 const calcEmitter = new EventEmitter();
 
 const opeartions = {
@@ -18,9 +13,26 @@ const opeartions = {
     "-": subtraction
 };
 
-calcEmitter.on('result', (data) => {
-    console.log(data);
-});
+const regexp = /^\d{1,10} \d{1,10} [\+, \-, \/, \*]{1}$/g;
 
-calcEmitter.emit('result', opeartions[operation](firstNum, secondNum));
+const firstVal  = process.argv[2];
+const secondVal = process.argv[3];
+const thirdVal  = process.argv[4].replace('functions', '*'); //при передаче * приходит значение functions как санитайзить значения пока не зачем
 
+const input = [firstVal, secondVal, thirdVal].join(' ');
+
+if (!regexp.test(input)) {
+    console.log('введены неверные данные.');
+    return;
+} else {
+
+    const firstNum  = parseInt(firstVal);
+    const secondNum = parseInt(secondVal);
+    const operation = thirdVal;
+
+    calcEmitter.on('result', (data) => {
+        console.log(data);
+    });
+
+    calcEmitter.emit('result', opeartions[operation](firstNum, secondNum));
+};

@@ -29,7 +29,7 @@ rl.question(`Для запуска таймера введите желаемы�
         return sum + num * MICROSECONDS[discharge];
     }, 0);
     
-    let currentDate = new Date();
+    const currentDate = new Date();
     console.log(`Ваш таймер запустился в ${currentDate} и завершится через  ${time}!`);
     
     setTimeout(() => {
