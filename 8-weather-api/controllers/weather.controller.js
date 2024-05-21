@@ -2,9 +2,9 @@
 import { getWeather, getIcon } from '../services/api.service.js';
 import { prepareError, prepareWeather } from '../services/log.service.js';
 import { getKeyValue } from '../services/storage.service.js';
-import { LANGUAGE_LOG_PACK, TOKEN_DICTIONARY } from '../dictionares/dictionares.js';
+import { LANGUAGE_LOG_PACK } from '../dictionares/language-packs.js';
 import { getLanguage } from './language.controller.js';
- 
+import { TOKEN_DICTIONARY } from '../dictionares/dictionaries.js';
 
 
 const getForcast = async () => {	

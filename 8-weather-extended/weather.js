@@ -2,9 +2,9 @@
 import { getArgs } from './helpers/args.js';
 import { getWeather, getIcon } from './services/api.service.js';
 import { printHelp, printSuccess, printError, printWeather, showSetting } from './services/log.service.js';
-import { saveKeyValue, getKeyValue, getStortage } from './services/storage.service.js';
-import { LANGUAGE_LOG_PACK, TOKEN_DICTIONARY } from './dictionares/dictionares.js';
-
+import { saveKeyValue, getKeyValue, getStorage } from './services/storage.service.js';
+import { LANGUAGE_LOG_PACK } from './dictionares/language-packs.js';
+import { TOKEN_DICTIONARY } from './dictionares/dictionaries.js';
 
 // определяем язык. если не определен ставим английский
 const language = await getKeyValue(TOKEN_DICTIONARY.lang) ?? 'en';		
@@ -90,7 +90,7 @@ const initCLI = async () => {
 		return saveLanguage(args.l);
 	}
 	if (args.s) {
-		let storageData = await getStortage();
+		let storageData = await getStorage();
 		return showSetting(storageData, language);
 	}
 	return getForcast();

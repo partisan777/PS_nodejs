@@ -75,12 +75,6 @@ const LANGUAGE_SHOW_SETTINGS_PACK = {
 	}
 };
 
-const TOKEN_DICTIONARY = {
-	token: 'token',
-	city: 'city',
-	lang: 'lang'
-};
-
 const LANGUAGE_API_PACK = {
 	ru: {
 		notSetApiKey: 'Не задан ключ API, задайте его через команду'
@@ -90,4 +84,4 @@ const LANGUAGE_API_PACK = {
 	}
 };
 
-export { LANGUAGE_WEATHER_PACK, LANGUAGE_LOG_HELP_PACK, LANGUAGE_LOG_PACK, LANGUAGE_SHOW_SETTINGS_PACK, LANGUAGE_API_PACK, TOKEN_DICTIONARY };
+export { LANGUAGE_WEATHER_PACK, LANGUAGE_LOG_HELP_PACK, LANGUAGE_LOG_PACK, LANGUAGE_SHOW_SETTINGS_PACK, LANGUAGE_API_PACK };

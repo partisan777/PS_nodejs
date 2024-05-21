@@ -1,14 +1,14 @@
 import { homedir } from 'os';
 import { join } from 'path';
 import { promises } from 'fs';
-import { TOKEN_DICTIONARY } from '../dictionares/dictionares.js';
+import { TOKEN_DICTIONARY } from '../dictionares/dictionaries.js';
 
 
 const SETTINS_FILE_NAME = 'weather-data.json';
 const filePath = join(homedir(), SETTINS_FILE_NAME);
 
 
-const getStortage = async () => {
+const getStorage = async () => {
 	let data = {};
 	if (await isExist(filePath)) {
 		const file = await promises.readFile(filePath);
@@ -18,17 +18,16 @@ const getStortage = async () => {
 };
 
 const saveKeyValue = async (key, value) => {
-	let data = await getStortage();
+	let data = await getStorage();
 	data[key] = value;
 	await promises.writeFile(filePath, JSON.stringify(data));
 };
 
 const getKeyValue = async (key) => {
-	let data = await getStortage();
+	let data = await getStorage();
 	if (data[key]) {
 		return data[key];		
-	}
-	return undefined;
+	};
 };
 
 const isExist = async (path) => {
@@ -43,4 +42,4 @@ const isExist = async (path) => {
 	}
 };
 
-export { saveKeyValue, getKeyValue, getStortage };
+export { saveKeyValue, getKeyValue, getStorage };

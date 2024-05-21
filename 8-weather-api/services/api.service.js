@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LANGUAGE_API_PACK } from '../dictionares/dictionares.js';
+import { LANGUAGE_API_PACK } from '../dictionares/language-packs.js';
 
 const getIcon = (icon) => {
 	switch (icon.slice(0, -1)) {

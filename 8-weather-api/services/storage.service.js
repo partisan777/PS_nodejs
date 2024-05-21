@@ -8,7 +8,7 @@ const SETTINS_FILE_NAME = 'weather-data.json';
 const filePath = join(homedir(), SETTINS_FILE_NAME);
 
 
-const getStortage = async () => {
+const getStorage = async () => {
 	let data = {};
 	if (await isExist(filePath)) {
 		const file = await promises.readFile(filePath);
@@ -20,11 +20,11 @@ const getStortage = async () => {
 
 
 const getKeyValue = async (key) => {
-	let data = await getStortage();
+	let data = await getStorage();
 	if (data[key]) {
 		return data[key];		
-	}
-	return undefined;
+	};
+	
 };
 
 const isExist = async (path) => {
@@ -40,10 +40,10 @@ const isExist = async (path) => {
 };
 
 const saveStorage = async (newData) => {
-	let oldData = await getStortage();
+	const oldData = await getStorage();
 	const data = Object.assign(oldData, newData);
 	await promises.writeFile(filePath, JSON.stringify(data));
 };
 
 
-export { getKeyValue, getStortage, saveStorage };
+export { getKeyValue, getStorage, saveStorage };

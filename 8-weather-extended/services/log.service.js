@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import dedent from 'dedent-js';
-import { LANGUAGE_WEATHER_PACK, LANGUAGE_SHOW_SETTINGS_PACK, LANGUAGE_LOG_HELP_PACK, TOKEN_DICTIONARY } from '../dictionares/dictionares.js';
+import { LANGUAGE_WEATHER_PACK, LANGUAGE_SHOW_SETTINGS_PACK, LANGUAGE_LOG_HELP_PACK  } from '../dictionares/language-packs.js';
+import { TOKEN_DICTIONARY } from '../dictionares/dictionaries.js';
 
 
 const printError = (error) => {
