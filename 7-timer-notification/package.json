@@ -1,0 +1,15 @@
+{
+  "name": "timer-notification",
+  "version": "1.0.0",
+  "description": "Timer notification",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NG",
+  "license": "ISC",
+  "dependencies": {
+    "node-notifier": "^10.0.1"
+  }
+}
