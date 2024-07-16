@@ -27,3 +27,4 @@ export const TYPES = {
 	WarehouseBalancesController: Symbol.for('WarehouseBalancesController')
 	
 };
+

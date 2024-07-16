@@ -7,6 +7,6 @@ export class PromotionUpdateSatusDto {
     id: number;
 
     @IsNumber()
-    newStatusId: number;
+    newStatusNumber: number;
 
 };

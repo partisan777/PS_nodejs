@@ -1,20 +1,14 @@
 import { IMiddleware } from './middleware.interface';
 import { NextFunction, Request, Response } from 'express';
-import { inject, injectable } from 'inversify';
-import { TYPES } from '../types';
-import { IUserService } from '../modules/users/users.service.interface';
-import { UserService } from '../modules/users/users.service';
+import { EUserRoles } from '../enum';
 
 export class CheckUserRole implements IMiddleware {
 	
-	constructor() {}
+	constructor(private permissions: EUserRoles[]) {}
 	async execute(req: Request, res: Response, next: NextFunction): Promise<void> {
-        const user = await new UserService.getUserInfo(req.user);
-        if (user) {
-            console.log(user)
-            req.userRole = user;
-            next();  
+        if (this.permissions.includes(req.userRole as EUserRoles)) {
+            return next();  
         };
-        next();
+        res.status(403).send({error: 'Недостаточно прав'});
 	};
 };

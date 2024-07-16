@@ -1,7 +1,6 @@
 import { IMiddleware } from './middleware.interface';
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { UserService } from '../modules/users/users.service';
 import { IUserService } from '../modules/users/users.service.interface';
 
 
@@ -15,12 +14,13 @@ export class AuthMiddleware implements IMiddleware {
 					next();
 				} else if (payload && payload !== 'string') {
 					const authUser = await this.userService.getUserInfo(payload.email)
-					console.log(authUser);
+					//console.log(authUser);
 					if (!authUser) {
 						next();
 					} else {
-						req.user = payload.email;
-						req.userRole = payload.userRole;
+						req.user = authUser.email;
+						req.userRole = authUser.userRoleNumber;
+						req.userReqId = authUser.id;
 						next();
 					}
 				}

@@ -7,7 +7,7 @@ import { ItemTypeModel } from '@prisma/client';
 @injectable()
 export class ItemTypesRepository implements IItemTypesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
-	
+
 	async getItemTypeByNumber(itemTypeNumber: number): Promise<ItemTypeModel | null> {
 		return this.prismaService.client.itemTypeModel.findFirst({
 			where: {
@@ -15,8 +15,8 @@ export class ItemTypesRepository implements IItemTypesRepository {
 			},
 		});
 	};
-	
+
 	async getItemTypes() {
-		return this.prismaService.client.itemTypeModel.findMany();    
+		return this.prismaService.client.itemTypeModel.findMany();
 	};
 };

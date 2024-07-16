@@ -2,16 +2,16 @@ import { IsNumber, IsString } from 'class-validator';
 
 
 export class ItemSaveDto {
-    
+
     @IsNumber()
     id: number;
-    
+
     @IsString({ message: 'Не указано наименование товара' })
     name: string;
-    
+
     @IsString({ message: 'Не указано описание товара' })
-    description: string; 
-    
+    description: string;
+
     @IsNumber()
     price: number;
 
@@ -21,4 +21,3 @@ export class ItemSaveDto {
     @IsNumber()
     rowStatusNumber: number;
 };
-   

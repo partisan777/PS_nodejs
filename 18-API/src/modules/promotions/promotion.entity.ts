@@ -3,7 +3,7 @@ export class Promotion {
 	id:              number;
 	name:            string;
 	description:     string;
-	discoutnPercent: number; 
+	discoutnPercent: number;
 	rowStatusNumber:     number;
 	userId:          number;
 
@@ -11,7 +11,7 @@ export class Promotion {
 		id:              number,
 		name:            string,
 		description:     string,
-		discoutnPercent: number, 
+		discoutnPercent: number,
 		rowStatusNumber: number,
 		userId:          number
 	)
@@ -20,7 +20,7 @@ export class Promotion {
 		this.name = name,
 		this.description = description,
 		this.discoutnPercent = discoutnPercent,
-		this.rowStatusNumber = rowStatusNumber	
+		this.rowStatusNumber = rowStatusNumber,
 		this.userId = userId
 	};
 

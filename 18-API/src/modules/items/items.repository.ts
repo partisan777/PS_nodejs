@@ -4,13 +4,14 @@ import { TYPES } from '../../types';
 import { Item } from './item.entity';
 import { IItemsRepository } from './items.repository.interface';
 import { ItemModel } from '@prisma/client';
+import { IQueryParams } from '../../interfaces';
 
 @injectable()
 export class ItemsRepository implements IItemsRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
 	async createItem(item: Item): Promise<ItemModel> {
-		return this.prismaService.client.itemModel.create({			
+		return this.prismaService.client.itemModel.create({
 			data: {
 				description: item.description,
 				name: item.name,
@@ -22,7 +23,7 @@ export class ItemsRepository implements IItemsRepository {
 	};
 
 	async saveItem(item: Item): Promise<ItemModel> {
-		return this.prismaService.client.itemModel.update({			
+		return this.prismaService.client.itemModel.update({
 			where: {
 				id: item.id
 			},
@@ -44,7 +45,7 @@ export class ItemsRepository implements IItemsRepository {
 		});
 	};
 
-	async updateStatus(id: number, newStatusId: number): Promise<ItemModel> {
+	async updateItemStatus(id: number, newStatusId: number): Promise<ItemModel> {
 		return this.prismaService.client.itemModel.update({
 			where: {
 				id: id
@@ -55,7 +56,13 @@ export class ItemsRepository implements IItemsRepository {
 		});
 	};
  
-	async getItems() {
-		return this.prismaService.client.itemModel.findMany();    
+	async getItems(queryParams: IQueryParams) {
+		const whereCondition = {AND: queryParams.FIND};
+		const sortCondition = queryParams.SORT;
+		return this.prismaService.client.itemModel.findMany({where: whereCondition, orderBy: sortCondition});
 	};
+
+	async deleteItem(id: number) {
+		return this.prismaService.client.itemModel.delete({where: {id: id}});
+	}
 };

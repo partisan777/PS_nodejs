@@ -81,8 +81,8 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IUserRolesService>(TYPES.UserRolesService).to(UserRolesService);
 	bind<IUserRolesController>(TYPES.UserRolesController).to(UserRolesController);
 	bind<IWarehouseBalancesRepository>(TYPES.WarehouseBalancesRepository).to(WarehouseBalancesRepository).inSingletonScope();
-	bind<IWarehouseBalancesService>(TYPES.UserRolesService).to(WarehouseBalancesService);
-	bind<IWarehouseBalancesController>(TYPES.UserRolesController).to(WarehouseBalancesController);
+	bind<IWarehouseBalancesService>(TYPES.WarehouseBalancesService).to(WarehouseBalancesService);
+	bind<IWarehouseBalancesController>(TYPES.WarehouseBalancesController).to(WarehouseBalancesController);
 	bind<App>(TYPES.Application).to(App);
 });
 

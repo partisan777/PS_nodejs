@@ -4,17 +4,19 @@ import { TYPES } from '../../types';
 import { PromotionModel } from '@prisma/client';
 import { IPromotionsRepository } from './promotions.repository.interface';
 import { Promotion } from './promotion.entity';
+import { IQueryParams } from '../../interfaces';
+
 
 @injectable()
 export class PromotionsRepository implements IPromotionsRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
 	async createPromotion(promo: Promotion): Promise<PromotionModel> {
-		return this.prismaService.client.promotionModel.create({			
+		return this.prismaService.client.promotionModel.create({
 			data: {
 				description: promo.description,
 				name: promo.name,
-				discoutnPercent: promo.discoutnPercent, 
+				discoutnPercent: promo.discoutnPercent,
 				rowStatusNumber: promo.rowStatusNumber,
 				userId: promo.userId
 			},
@@ -22,14 +24,14 @@ export class PromotionsRepository implements IPromotionsRepository {
 	};
 
 	async savePromotion(promo: Promotion): Promise<PromotionModel> {
-		return this.prismaService.client.promotionModel.update({			
+		return this.prismaService.client.promotionModel.update({
 			where: {
 				id: promo.id
 			},
 			data: {
 				description: promo.description,
 				name: promo.name,
-				discoutnPercent: promo.discoutnPercent, 
+				discoutnPercent: promo.discoutnPercent,
 				rowStatusNumber: promo.rowStatusNumber,
 				userId: promo.userId
 			}
@@ -44,7 +46,7 @@ export class PromotionsRepository implements IPromotionsRepository {
 		});
 	};
 
-	async updateStatus(id: number, newStatusId: number): Promise<PromotionModel> {
+	async updatePromotionStatus(id: number, newStatusId: number): Promise<PromotionModel> {
 		return this.prismaService.client.promotionModel.update({
 			where: {
 				id: id
@@ -55,7 +57,13 @@ export class PromotionsRepository implements IPromotionsRepository {
 		});
 	};
 
-	async getPromotions() {
-		return this.prismaService.client.promotionModel.findMany();    
+	async getPromotions(queryParams: IQueryParams) {
+		const whereCondition = {AND: queryParams.FIND};
+		const sortCondition = queryParams.SORT;
+		return this.prismaService.client.promotionModel.findMany({where: whereCondition, orderBy: sortCondition});
+	};
+
+	async deletePromotion(id: number) {
+		return this.prismaService.client.promotionModel.delete({where: {id: id}});
 	};
 };
