@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  title: Task Management API
+  description: API для управления задачами.
+  version: 1.0.1
+servers:
+  - url: http://localhost:8000/
+    description: Локальный сервер
+paths:
+  /promotions/createpromotion:
+    post:
+      summary: создать промоакцию
+      requestBody:
+        description: создать промоакцию
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPromotion'
+      responses:
+        '200':
+          description: промоакция создана
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Promotion'
+  /promotions/updatepromotionstatus:
+    post:
+      summary: обновить статус промо-акции
+      requestBody:
+        description: обновление промо-акцию
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePromotionStatus'
+      responses:
+        '200':
+          description: статус обновлен
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Promotion'
+  /promotions/savepromotion:
+    post:
+      summary: обновить промо-акцию
+      requestBody:
+        description: обновление промо-акцию
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePromotion'
+      responses:
+        '200':
+          description: промоакция обновлена
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Promotion'
+  /promotions/deletepromotion:
+    delete:
+      summary: Удалить промоакции по ID
+      requestBody:
+        description: удаление промоакции
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeletePromotionRequest'
+      responses:
+        '200':
+          description: акция удалена
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/DeletePromotionResponse'
+  /promotions/getpromotionbyid:
+    get:
+      summary: получить промоакцию по id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPromotionByIdRequest'
+      responses:
+        '200':
+          description: промоакция получена
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Promotion'
+  /promotions/getpromotions:
+    get:
+      summary: получить промоакции
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPromotions'
+      responses:
+        '200':
+          description: промоакции получены
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promotion'
+
+components:
+  schemas:
+    Promotion:
+      type: object
+      properties:
+        id:
+          type: number
+          description: идентификатор акции
+        name:
+          type: string
+          description: название промоакции
+        description:
+          type: string
+          description: описание
+        discoutnPercent:
+          type: number
+          description: процент скидки
+        rowStatusNumber:
+          type: number
+          description: цифровой номер статуса записи
+        userId":
+          type: number
+          description: идентификатор пользователя
+        CreatedAt:
+          type: string
+          format: date-time
+          description: дата создания акции
+        UpdatedAt: 
+          type: string
+          format: date-time
+          description: дата создания акции
+    UpdatePromotionStatus:
+      properties:
+        id:
+          type: number
+          description: идентификатор акции{
+        newStatusNumber: 
+          type: number
+          description: цифровой номер статуса записи
+    NewPromotion:
+      type: object
+      properties:
+        name:
+          type: string
+          description: название промоакции
+        description:
+          type: string
+          description: описание
+        discoutnPercent: 
+          type: number
+          description: процент скидки
+        rowStatusNumber:
+          type: number
+          description: цифровой номер статуса записи
+        userId":
+          type: number
+          description: идентификатор пользователя
+    GetPromotions:
+      type: object
+      properties:
+        getParams:
+          type: object
+          description: параметры запроса
+          properties:
+            searchParams:
+              type: object
+              properties:
+                name:
+                  type: string
+                rowStatusNumber:
+                  type: number
+            sortParams:
+              type: object
+              properties:
+                name:
+                  type: string
+                  enum: ["asc", "desc"]
+                rowStatusNumber:
+                  type: string
+                  enum: ["asc", "desc"]
+    UpdatePromotion:
+      type: object
+      properties:
+        id:
+          type: number
+          description: идентификатор акции
+        name:
+          type: string
+          description: название промоакции
+        description:
+          type: string
+          description: описание
+        discoutnPercent:
+          type: number
+          description: процент скидки
+        rowStatusNumber:
+          type: number
+          description: цифровой номер статуса записи
+        userId":
+          type: number
+          description: идентификатор пользователя
+        CreatedAt:
+          type: string
+          format: date-time
+          description: дата создания акции
+        UpdatedAt:
+          type: string
+          format: date-time
+          description: дата создания акции
+    DeletePromotionResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: number
+          enum: [0, 1, 2]
+    DeletePromotionRequest:
+      type: object
+      properties:
+        id:
+          type: number
+    GetPromotionByIdRequest:
+      type: object
+      properties:
+        id:
+          type: number
