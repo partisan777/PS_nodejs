@@ -7,12 +7,6 @@ export class ItemUpdateSatusDto {
     id: number;
 
     @IsNumber()
-    newStatusId: number;
-
-    @IsNumber()
-    userId: number;
-
-    @IsNumber()
-    userRoleNumber: number;
+    newStatusNumber: number;
 
 };

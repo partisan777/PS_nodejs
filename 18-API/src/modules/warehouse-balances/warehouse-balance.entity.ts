@@ -20,7 +20,7 @@ export class WarehouseBalance {
 		this.description = description;
 		this.userId = userId;
 		this.itemId = itemId;
-		this.quantity = quantity;		
+		this.quantity = quantity;
 		this.rowStatusNumber = rowStatusNumber;
 	};
 };

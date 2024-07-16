@@ -1,7 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
-
-export class GetPromotinDto {
+export class GetPromotionDto {
     FIND?: {
         name?: string;
 	    rowStatusNumber?: number[];
@@ -12,7 +11,7 @@ export class GetPromotinDto {
     }
 };
 
-export class GetRequestPromotinDto {
+export class GetRequestPromotionDto {
     getParams: {
 		searchParams: {
             name?: string;
@@ -20,7 +19,7 @@ export class GetRequestPromotinDto {
         },
         sortParams: {
             name?: string;
-            rowStatusNumber?: string;
+            rowStatusNumber: string;
         }
     }
 };

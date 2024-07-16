@@ -16,6 +16,9 @@ export class ItemSaveDto {
     price: number;
 
     @IsNumber()
+    userId: number;
+
+    @IsNumber()
     itemTypeNumber: number;
 
     @IsNumber()

@@ -17,15 +17,15 @@ export interface IFindPromotionParams {
 };
 
 export interface ISortItemParams {
-	name?: string;
-	price?: string;
-	maxPrice?: string;
-	itemTypeNumber?: string;
-	rowStatusNumber?: string;
+	name?: "asc" | "desc";
+	price?: "asc" | "desc";
+	maxPrice?: "asc" | "desc";
+	itemTypeNumber?: "asc" | "desc";
+	rowStatusNumber?: "asc" | "desc";
 };
 
 export interface ISortPromotionParams {
-	name?: string;
-	rowStatusNumber?: string;
+	name?: "asc" | "desc";
+	rowStatusNumber?: "asc" | "desc";
 };
 

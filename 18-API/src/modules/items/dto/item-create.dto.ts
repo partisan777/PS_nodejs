@@ -10,12 +10,8 @@ export class ItemCreateDto {
     description: string;
 
     @IsNumber()
-    userId: number;
-
-    @IsNumber()
     price: number;
 
     @IsNumber()
     itemTypeNumber: number;
-
 };

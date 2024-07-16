@@ -17,7 +17,7 @@ import { EUserRoles } from '../../enum';
 import { UserRequestDataDto } from '../users/dto/user-data.dto';
 import { PromotionUpdateSatusDto } from './dto/promotion-update-status.dto';
 import { IFindItemParams, ISortItemParams } from '../../interfaces';
-import { GetPromotinDto, GetRequestPromotinDto } from './dto/promotion-get.dto';
+import { GetPromotionDto, GetRequestPromotionDto } from './dto/promotion-get.dto';
 
 
 @injectable()
@@ -57,7 +57,7 @@ export class PromotionController extends BaseController implements IPromotionCon
 				path: '/getpromotions',
 				method: 'get',
 				func: this.getPromotions,
-				middlewares:  [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.SHIPPER]), new ValidateMiddleware(GetRequestPromotinDto)],
+				middlewares:  [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.SHIPPER]), new ValidateMiddleware(GetRequestPromotionDto)],
 			},
 			{
 				path: '/deletepromotion',

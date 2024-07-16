@@ -19,7 +19,7 @@ import { CheckUserRole } from '../../common/checkUserRole.middleware';
 
 @injectable()
 export class UserController extends BaseController implements IUserController {
-	constructor(
+	constructor( 
 		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.UserService) private userService: IUserService,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
@@ -77,10 +77,8 @@ export class UserController extends BaseController implements IUserController {
 	};
 
 	async info(req: Request, res: Response, next: NextFunction): Promise<void> {
-		console.log(req.user, req.userId, req.userRole, 12) 
 		const userInfo = await this.userService.getUserInfo(req.user);
 		this.ok(res, { email: userInfo?.email, id: userInfo?.id, login: userInfo?.login, userRole: userInfo?.userRoleNumber });
-		// this.ok(res, userInfo);
 	};
 
 	private signJWT(email: string, secret: string): Promise<string> {
@@ -103,4 +101,4 @@ export class UserController extends BaseController implements IUserController {
 			);
 		});
 	}
-}
+};

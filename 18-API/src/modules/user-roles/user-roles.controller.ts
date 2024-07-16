@@ -24,23 +24,23 @@ export class UserRolesController extends BaseController implements IUserRolesCon
 				method: 'get',
 				func: this.getUserRoleByNumber,
 				middlewares: [],
-			},			
+			},
 			{
 				path: '/getuserroles',
 				method: 'get',
 				func: this.getUserRoles,
 				middlewares: [],
 			}
-		]);		
+		]);
 	}
 
 	async getUserRoleByNumber(req: Request, res: Response, next: NextFunction) {
 		const roleNumber  = req.body.roleNumber;
 		const userRole = await this.userRoleService.getUserRoleByNumber( roleNumber );
-		this.ok( res, userRole );	
+		this.ok( res, userRole );
 	};
 
-	async getUserRoles(req: Request, res: Response, next: NextFunction) { 
+	async getUserRoles(req: Request, res: Response, next: NextFunction) {
 		const userRoles = await this.userRoleService.getUserRoles();
 		this.ok( res, userRoles );
 	};

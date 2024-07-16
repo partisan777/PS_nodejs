@@ -10,8 +10,8 @@ import { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
 export class WarehouseBalancesRepository implements IWarehouseBalancesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
-	async create({ id, name, description, userId, itemId, quantity }: WarehouseBalanceCreateDto): Promise<WarehouseBalanceModel> {
-		const rowStatusNumber = ERowStatus.NEW;		
+	async createBalance({ name, description, userId, itemId, quantity }: WarehouseBalanceCreateDto): Promise<WarehouseBalanceModel> {
+		const rowStatusNumber = ERowStatus.NEW;
 		return this.prismaService.client.warehouseBalanceModel.create({
 			data: {
 				name,
@@ -24,7 +24,7 @@ export class WarehouseBalancesRepository implements IWarehouseBalancesRepository
 		});
 	};
 
-	async findById(id: number): Promise<WarehouseBalanceModel | null> {
+	async findBalanceById(id: number): Promise<WarehouseBalanceModel | null> {
 		return this.prismaService.client.warehouseBalanceModel.findFirst({
 			where: {
 				id: id
@@ -32,7 +32,7 @@ export class WarehouseBalancesRepository implements IWarehouseBalancesRepository
 		});
 	};
 
-	async updateQuantity(id: number, quantity: number): Promise<WarehouseBalanceModel> {
+	async updateBalanceQuantity(id: number, quantity: number): Promise<WarehouseBalanceModel> {
 		return this.prismaService.client.warehouseBalanceModel.update({
 			data: {
 				quantity: quantity
@@ -43,7 +43,7 @@ export class WarehouseBalancesRepository implements IWarehouseBalancesRepository
 		});
 	};
 
-	async updateStatus(id: number, newStatusNumber: number): Promise<WarehouseBalanceModel> {
+	async updateBalanceStatus(id: number, newStatusNumber: number): Promise<WarehouseBalanceModel> {
 		return this.prismaService.client.warehouseBalanceModel.update({
 			data: {
 				rowStatusNumber: newStatusNumber
@@ -52,5 +52,5 @@ export class WarehouseBalancesRepository implements IWarehouseBalancesRepository
 				id: id
 			}
 		});
-	};	
+	};
 };

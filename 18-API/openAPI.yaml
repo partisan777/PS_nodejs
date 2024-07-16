@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: Task Management API
   description: API для управления задачами.
@@ -7,25 +7,6 @@ servers:
   - url: http://localhost:8000/
     description: Локальный сервер
 paths:
-  /promotions/createpromotion:
-    post:
-      summary: создать промоакцию
-      requestBody:
-        description: создать промоакцию
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewPromotion'
-      responses:
-        '200':
-          description: промоакция создана
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/Promotion'
   /promotions/updatepromotionstatus:
     post:
       summary: обновить статус промо-акции
@@ -49,7 +30,7 @@ paths:
     post:
       summary: обновить промо-акцию
       requestBody:
-        description: обновление промо-акцию
+        description: обновление статуса задачи 
         required: true
         content:
           application/json:
@@ -57,7 +38,7 @@ paths:
               $ref: '#/components/schemas/UpdatePromotion'
       responses:
         '200':
-          description: промоакция обновлена
+          description: статус обновлен
           content:
             application/json:
               schema:
@@ -66,60 +47,19 @@ paths:
                   $ref: '#/components/schemas/Promotion'
   /promotions/deletepromotion:
     delete:
-      summary: Удалить промоакции по ID
-      requestBody:
-        description: удаление промоакции
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeletePromotionRequest'
+      summary: Удалить задачу по ID
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: ID задачи
+          schema:
+            type: string
       responses:
-        '200':
-          description: акция удалена
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/DeletePromotionResponse'
-  /promotions/getpromotionbyid:
-    get:
-      summary: получить промоакцию по id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetPromotionByIdRequest'
-      responses:
-        '200':
-          description: промоакция получена
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/Promotion'
-  /promotions/getpromotions:
-    get:
-      summary: получить промоакции
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetPromotions'
-      responses:
-        '200':
-          description: промоакции получены
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Promotion'
-
+        '204':
+          description: Задача успешно удалена
+        '404':
+          description: Задача не найдена
 components:
   schemas:
     Promotion:
@@ -134,29 +74,27 @@ components:
         description:
           type: string
           description: описание
-        discoutnPercent:
+        discoutnPercent: 
           type: number
           description: процент скидки
-        rowStatusNumber:
+        rowStatusNumber: 
           type: number
           description: цифровой номер статуса записи
         userId":
           type: number
           description: идентификатор пользователя
         CreatedAt:
-          type: string
-          format: date-time
+          type: timestamp
           description: дата создания акции
-        UpdatedAt:
-          type: string
-          format: date-time
+        UpdatedAt: 
+          type: timestamp
           description: дата создания акции
     UpdatePromotionStatus:
       properties:
         id:
           type: number
           description: идентификатор акции{
-        newStatusNumber:
+        newStatusNumber: 
           type: number
           description: цифровой номер статуса записи
     NewPromotion:
@@ -168,10 +106,10 @@ components:
         description:
           type: string
           description: описание
-        discoutnPercent:
+        discoutnPercent: 
           type: number
           description: процент скидки
-        rowStatusNumber:
+        rowStatusNumber: 
           type: number
           description: цифровой номер статуса записи
         userId":
@@ -180,7 +118,7 @@ components:
     GetPromotions:
       type: object
       properties:
-        getParams:
+        getParams: 
           type: object
           description: параметры запроса
           properties:
@@ -190,7 +128,7 @@ components:
                 name:
                   type: string
                 rowStatusNumber:
-                  type: number
+                  type: number            
             sortParams:
               type: object
               properties:
@@ -222,28 +160,13 @@ components:
           type: number
           description: идентификатор пользователя
         CreatedAt:
-          type: string
-          format: date-time
+          type: timestamp
           description: дата создания акции
         UpdatedAt:
-          type: string
-          format: date-time
+          type:
           description: дата создания акции
-    DeletePromotionResponse:
+    DeletePromotion:
       type: object
       properties:
         message:
           type: string
-        id:
-          type: number
-          enum: [0, 1, 2]
-    DeletePromotionRequest:
-      type: object
-      properties:
-        id:
-          type: number
-    GetPromotionByIdRequest:
-      type: object
-      properties:
-        id:
-          type: number

@@ -7,6 +7,7 @@ import { IWarehouseBalancesRepository } from './warehouse-balances.repository.in
 import { IWarehouseBalancesService } from './warehouse-balances.service.interface';
 import { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
 import { ERowStatus } from '../../enum';
+import { UserRequestDataDto } from '../users/dto/user-data.dto';
 
 
 @injectable()
@@ -15,22 +16,27 @@ export class WarehouseBalancesService implements IWarehouseBalancesService {
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.WarehouseBalancesRepository) private warehouseBalancesRepository: IWarehouseBalancesRepository,
 	) {}
-	
-	async create(warehouseBalance: WarehouseBalanceCreateDto): Promise<WarehouseBalanceModel> {
-		const { name, description, userId, itemId, quantity } = warehouseBalance;
+
+	async createBalance(balanceData: WarehouseBalanceCreateDto, userData: UserRequestDataDto ): Promise<WarehouseBalanceModel> {
+		const {user, userReqId, userRole } = userData;
+		const { name, description, userId, itemId, quantity } = balanceData;
+
 		const newWarehouseBalance = new WarehouseBalance(-1, name, description, userId, itemId, quantity, ERowStatus.NEW);
-		return this.warehouseBalancesRepository.create(newWarehouseBalance);
+		return this.warehouseBalancesRepository.createBalance(newWarehouseBalance);
 	};
 
-	async findById(id: number): Promise<WarehouseBalanceModel | null> {
-		return this.warehouseBalancesRepository.findById(id);
+	async findBalanceById(id: number, userData: UserRequestDataDto): Promise<WarehouseBalanceModel | null> {
+		const {user, userReqId, userRole } = userData;
+		return this.warehouseBalancesRepository.findBalanceById(id);
 	};
 
-	async updateQuantity(id: number, quantity: number): Promise<WarehouseBalanceModel> {
-		return this.warehouseBalancesRepository.updateQuantity(id, quantity);
+	async updateBalanceQuantity(id: number, quantity: number, userData: UserRequestDataDto): Promise<WarehouseBalanceModel> {
+		const {user, userReqId, userRole } = userData;
+		return this.warehouseBalancesRepository.updateBalanceQuantity(id, quantity);
 	};
 
-	async updateStatus(id: number, newStatusId: number): Promise<WarehouseBalanceModel> {
-		return this.warehouseBalancesRepository.updateStatus(id, newStatusId);
+	async updateBalanceStatus(id: number, newStatusId: number, userData: UserRequestDataDto): Promise<WarehouseBalanceModel> {
+		const {user, userReqId, userRole } = userData;
+		return this.warehouseBalancesRepository.updateBalanceStatus(id, newStatusId);
 	}
 };

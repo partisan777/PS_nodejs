@@ -15,7 +15,7 @@ datasource db {
 
 model UserModel {
   id                Int @id @default(autoincrement())
-  login             String 
+  login             String
   email             String
   password          String
   rowStatus         RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
@@ -23,14 +23,15 @@ model UserModel {
   userRole          UserRoleModel  @relation(fields: [userRoleNumber], references: [roleNumber])
   userRoleNumber    Int @map("user_role_number")
   promotion         PromotionModel[]
+  item              ItemModel[]
   WarehouseBalances WarehouseBalanceModel[]
   CreatedAt         DateTime @default(now()) @map("created_at")
   UpdatedAt         DateTime @default(now()) @map("updated_at")
 }
- 
+
 model UserRoleModel {
   id          Int @id @default(autoincrement())
-  description String 
+  description String
   user        UserModel[]
   roleNumber  Int @unique @map("role_number")
   CreatedAt   DateTime @default(now()) @map("created_at")
@@ -39,7 +40,7 @@ model UserRoleModel {
 
 model RowStatusModel {
   id                Int @id @default(autoincrement())
-  description       String 
+  description       String
   user              UserModel[]
   item              ItemModel[]
   promotion         PromotionModel[]
@@ -53,20 +54,22 @@ model RowStatusModel {
 model ItemModel {
   id              Int @id @default(autoincrement())
   name            String
-  description     String 
+  description     String
   price           Decimal
+  user            UserModel @relation(fields: [userId], references: [id])
+  userId          Int @map("user_id")
   itemType        ItemTypeModel @relation(fields: [itemTypeNumber], references: [itemTypeNumber])
-  itemTypeNumber  Int @map("item_type_number") 
+  itemTypeNumber  Int @map("item_type_number")
   rowStatus       RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
   rowStatusNumber Int @map("row_status_number")
   itemBalance     WarehouseBalanceModel?
-  CreatedAt       DateTime @default(now()) @map("created_at") 
-  UpdatedAt       DateTime @default(now()) @map("updated_at") 
+  CreatedAt       DateTime @default(now()) @map("created_at")
+  UpdatedAt       DateTime @default(now()) @map("updated_at")
 }
 
 model ItemTypeModel {
   id              Int @id @default(autoincrement())
-  description     String 
+  description     String
   item            ItemModel[]
   itemTypeNumber  Int @unique @map("item_type_number")
   rowStatus       RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
@@ -78,13 +81,13 @@ model ItemTypeModel {
 model PromotionModel {
   id              Int @id @default(autoincrement())
   name            String
-  description     String 
+  description     String
   discoutnPercent Decimal @map("discoutn_percent")
   rowStatus       RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
   rowStatusNumber Int @map("row_status_number")
-  user            UserModel @relation(fields: [userId], references: [id]) 
+  user            UserModel @relation(fields: [userId], references: [id])
   userId          Int @map("user_id")
-  CreatedAt       DateTime @default(now()) @map("created_at") 
+  CreatedAt       DateTime @default(now()) @map("created_at")
   UpdatedAt       DateTime @default(now()) @map("updated_at")
 }
 
@@ -93,13 +96,13 @@ model WarehouseBalanceModel {
   name            String
   description     String
   item            ItemModel @relation(fields: [itemId], references: [id])
-  itemId          Int @unique @map("item_id") 
+  itemId          Int @unique @map("item_id")
   rowStatus       RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
   rowStatusNumber Int @map("row_status_number")
-  user            UserModel @relation(fields: [userId], references: [id]) 
+  user            UserModel @relation(fields: [userId], references: [id])
   userId          Int @map("user_id")
   quantity        Decimal
-  CreatedAt       DateTime @default(now()) @map("created_at") 
-  UpdatedAt       DateTime @default(now()) @map("updated_at") 
+  CreatedAt       DateTime @default(now()) @map("created_at")
+  UpdatedAt       DateTime @default(now()) @map("updated_at")
 }
 

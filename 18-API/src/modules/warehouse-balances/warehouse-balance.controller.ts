@@ -11,7 +11,9 @@ import { IWarehouseBalancesService } from './warehouse-balances.service.interfac
 import { IWarehouseBalancesController } from './warehouse-balance.controller.interface';
 import { AuthGuard } from '../../common/auth.guard';
 import { AuthMiddleware } from '../../common/auth.middleware';
-import { ERowStatus } from '../../enum';
+import { ERowStatus, EUserRoles } from '../../enum';
+import { CheckUserRole } from '../../common/checkUserRole.middleware';
+import { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
 
 
 @injectable()
@@ -24,58 +26,63 @@ export class WarehouseBalancesController extends BaseController implements IWare
 		super(loggerService);
 		this.bindRoutes([
 			{
-				path: '/create',
+				path: '/createBalance',
 				method: 'post',
-				func: this.create,
-				middlewares: [],
+				func: this.createBalance,
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.STOREKEEPER]), new ValidateMiddleware(WarehouseBalanceCreateDto)],
 			},
 			{
-				path: '/findById',
+				path: '/findBalanceById',
 				method: 'get',
-				func: this.findById,
-				middlewares: [],
+				func: this.findBalanceById,
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.STOREKEEPER])],
 			},
 			{
 				path: '/updateQuantity',
 				method: 'get',
-				func: this.updateQuantity,
-				middlewares: [],
+				func: this.updateBalanceQuantity,
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.STOREKEEPER])],
 				// middlewares: [new AuthGuard(), new CheckUserRole()],
 				// middlewares: [new AuthGuard(), new AuthMiddleware(this.configService.get('SECRET'))],
 			},
 			{
-				path: '/updateStatus',
+				path: '/updateBalanceStatus',
 				method: 'post',
-				func: this.updateStatus,
-				middlewares: [new AuthGuard()],
+				func: this.updateBalanceStatus,
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN])],
 				// middlewares: [new AuthGuard(), new CheckUserRole()],
-				// middlewares: [new AuthGuard(), new AuthMiddleware(this.configService.get('SECRET'))],
 			},
 		]);
 	}
 
-	async create(req: Request, res: Response, next: NextFunction): Promise<void> {
-		const { name, description, userId, itemId, quantity } = req.body;
+	async createBalance(req: Request, res: Response, next: NextFunction): Promise<void> {
+		const {user, userReqId, userRole } = req;
+		const { name, description, itemId, quantity } = req.body;
 		const rowStatusNumber = ERowStatus.NEW;
-		const warehouseBalance = this.warehouseBalasncesService.create({ name, description, userId, itemId, quantity, rowStatusNumber });
+		const userId = userReqId;
+		const warehouseBalance = this.warehouseBalasncesService.createBalance({ name, description, userId, itemId, quantity, rowStatusNumber }, {user, userReqId, userRole });
 		this.ok(res, warehouseBalance );
 	};
 
-	async findById(req: Request, res: Response, next: NextFunction): Promise<void> {
+	async findBalanceById(req: Request, res: Response, next: NextFunction): Promise<void> {
+		const {user, userReqId, userRole } = req;
 		const id = req.body.id;
-		const warehouseBalance = this.warehouseBalasncesService.findById(id);
+		const warehouseBalance = this.warehouseBalasncesService.findBalanceById(id, {user, userReqId, userRole });
+		this.ok(res, warehouseBalance );
 	};
-	
-	async updateQuantity(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+	async updateBalanceQuantity(req: Request, res: Response, next: NextFunction): Promise<void> {
 		const { id, quantity } = req.body;
-		const warehouseBalance = this.warehouseBalasncesService.updateQuantity(id, quantity);
+		const {user, userReqId, userRole } = req;
+		const warehouseBalance = this.warehouseBalasncesService.updateBalanceQuantity(id, quantity, {user, userReqId, userRole });
 		this.ok(res, warehouseBalance );
 	};
-	
-	async updateStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+	async updateBalanceStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
 		const { id, newStatusId } = req.body;
-		const warehouseBalance = this.warehouseBalasncesService.updateStatus(id, newStatusId);
+		const {user, userReqId, userRole } = req;
+		const warehouseBalance = this.warehouseBalasncesService.updateBalanceStatus(id, newStatusId, {user, userReqId, userRole });
 		this.ok(res, warehouseBalance );
 	};
-	
+
 };

@@ -15,6 +15,7 @@ export class ItemsRepository implements IItemsRepository {
 			data: {
 				description: item.description,
 				name: item.name,
+				userId: item.userId,
 				price: item.price,
 				itemTypeNumber: item.itemTypeNumber,
 				rowStatusNumber: item.rowStatusNumber
@@ -39,6 +40,9 @@ export class ItemsRepository implements IItemsRepository {
 
 	async getItemById(id: number): Promise<ItemModel | null> {
 		return this.prismaService.client.itemModel.findFirst({
+			include: {
+				itemBalance: true,
+			},
 			where: {
 				id: id
 			},
@@ -55,11 +59,16 @@ export class ItemsRepository implements IItemsRepository {
 			},
 		});
 	};
- 
+
 	async getItems(queryParams: IQueryParams) {
 		const whereCondition = {AND: queryParams.FIND};
 		const sortCondition = queryParams.SORT;
-		return this.prismaService.client.itemModel.findMany({where: whereCondition, orderBy: sortCondition});
+		return this.prismaService.client.itemModel.findMany({
+			include: {
+				itemBalance: true,
+			},
+			where: whereCondition, orderBy: sortCondition
+		});
 	};
 
 	async deleteItem(id: number) {
