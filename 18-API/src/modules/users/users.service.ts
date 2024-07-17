@@ -23,7 +23,7 @@ export class UserService implements IUserService {
 			return null;
 		}
 		return this.usersRepository.create(newUser);
-	}
+	};
 
 	async validateUser({ email, password }: UserLoginDto): Promise<boolean> {
 		const existedUser = await this.usersRepository.find(email);
@@ -32,13 +32,17 @@ export class UserService implements IUserService {
 		}
 		const newUser = new User(existedUser.email, existedUser.login, existedUser.password);
 		return newUser.comparePassword(password);
-	}
+	};
 
 	async getUserInfo(email: string): Promise<UserModel | null> {
 		return this.usersRepository.find(email);
-	}
+	};
 
-	async updateUserStatus(id: number, newStatusId: number): Promise<UserModel | null> {
+	async updateUserStatus(id: number, newStatusId: number): Promise<UserModel> {
 		return this.usersRepository.updateUserStatus(id, newStatusId);
-	}
+	};
+
+	async updateuserrole(id: number, newRoleNumber: number): Promise<UserModel> {
+		return this.usersRepository.updateuserrole(id, newRoleNumber);
+	};
 };

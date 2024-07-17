@@ -15,11 +15,13 @@ import { IUserService } from './users.service.interface';
 import { AuthGuard } from '../../common/auth.guard';
 import { AuthMiddleware } from '../../common/auth.middleware';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
+import { EUserRoles } from '../../enum';
+import { UserUpdateRoleDto } from './dto/user-update-role.dto';
 
 
 @injectable()
 export class UserController extends BaseController implements IUserController {
-	constructor( 
+	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.UserService) private userService: IUserService,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
@@ -43,8 +45,12 @@ export class UserController extends BaseController implements IUserController {
 				method: 'get',
 				func: this.info,
 				middlewares: [new AuthGuard()],
-				// middlewares: [new AuthGuard(), new CheckUserRole()],
-				// middlewares: [new AuthGuard(), new AuthMiddleware(this.configService.get('SECRET'))],
+			},
+			{
+				path: '/updateuserrole',
+				method: 'post',
+				func: this.updateuserrole,
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN]), new ValidateMiddleware(UserUpdateRoleDto)],
 			},
 		]);
 	}
@@ -100,5 +106,11 @@ export class UserController extends BaseController implements IUserController {
 				},
 			);
 		});
-	}
+	};
+
+	async updateuserrole(req: Request, res: Response, next: NextFunction): Promise<void> {
+		const {id, newRoleNumber} = req.body;
+		const user = await this.userService.updateuserrole(id, newRoleNumber);
+		this.ok(res, { email: user?.email, id: user?.id, login: user?.login, userRole: user?.userRoleNumber });
+	};
 };

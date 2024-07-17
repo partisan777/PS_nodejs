@@ -8,6 +8,9 @@ import { TYPES } from '../../types';
 import { IConfigService } from '../../config/config.service.interface';
 import { IUserRolesController } from './user-roles.controller.interface';
 import { IUserRolesService } from './user-roles.service.interface';
+import { AuthGuard } from '../../common/auth.guard';
+import { CheckUserRole } from '../../common/checkUserRole.middleware';
+import { EUserRoles } from '../../enum';
 
 
 @injectable()
@@ -23,13 +26,13 @@ export class UserRolesController extends BaseController implements IUserRolesCon
 				path: '/getuserrolebynumber',
 				method: 'get',
 				func: this.getUserRoleByNumber,
-				middlewares: [],
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN])],
 			},
 			{
 				path: '/getuserroles',
 				method: 'get',
 				func: this.getUserRoles,
-				middlewares: [],
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN])],
 			}
 		]);
 	}

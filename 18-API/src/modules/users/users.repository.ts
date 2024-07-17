@@ -43,5 +43,15 @@ export class UsersRepository implements IUsersRepository {
 		});
 	};
 
-	
-}
+	async updateuserrole(id: number, newRoleNumber: number): Promise<UserModel> {
+		return this.prismaService.client.userModel.update({
+			data: {
+				userRoleNumber: newRoleNumber
+			},
+			where: {
+				id: id
+			}
+		});
+	};
+
+};
