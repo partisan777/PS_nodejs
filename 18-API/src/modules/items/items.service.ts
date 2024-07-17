@@ -49,6 +49,7 @@ export class ItemService implements IItemService {
 		const queryParam: IQueryParams = {FIND: [], SORT: []};
 		queryParam.FIND = generateQueryParamsCondition(searchParams, queryItemParamDict);
 		queryParam.SORT = generateSortParamsCondition(sortParams, sortItemParamDict);
+		queryParam.FIND.push({itemBalance:{quantity: {gt: 0}}});
 
 		return this.itemsRepository.getItems(queryParam);
 	};

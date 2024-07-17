@@ -1,4 +1,4 @@
-export const queryItemParamDict = { 
+export const queryItemParamDict = {
 	name: ["name", "contains"],
 	minPrice: ["price", "gt"],
 	maxPrice: ["price", "lt"],
