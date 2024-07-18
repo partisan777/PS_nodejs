@@ -1,14 +1,14 @@
 import { compare, hash } from 'bcryptjs';
 
 export class User {
-	private _password: string;    
-	private userRoleNumber: number;  
-	private rowStatusNumber: number; 
+	private _password: string;
+	private userRoleNumber: number;
+	private rowStatusNumber?: number;
 	constructor(
 		private readonly _email: string,
 		private readonly _login: string,
 		passwordHash?: string,
-		rowStatusNumber?: number, 
+		rowStatusNumber?: number
 	) {
 		if (passwordHash) {
 			this._password = passwordHash;
@@ -31,10 +31,6 @@ export class User {
 		return this.userRoleNumber;
 	};
 
-	get userStatusId(): number {
-		return this.rowStatusNumber;
-	};
-
 	public async setPassword(pass: string, salt: number): Promise<void> {
 		this._password = await hash(pass, salt);
 	};
@@ -46,13 +42,11 @@ export class User {
 
 /*
 model User {
-	id          
-	login       
-	email       
-	password    
-	rowStatusNumber 
-	userRole    
-	
-	
+	id
+	login
+	email
+	password
+	rowStatusNumber
+	userRole
   }
 */

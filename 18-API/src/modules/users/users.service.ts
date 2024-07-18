@@ -7,6 +7,7 @@ import { UserRegisterDto } from './dto/user-register.dto';
 import { User } from './user.entity';
 import { IUsersRepository } from './users.repository.interface';
 import { IUserService } from './users.service.interface';
+import { ERowStatus, EUserRoles } from '../../enum';
 
 @injectable()
 export class UserService implements IUserService {
@@ -15,7 +16,7 @@ export class UserService implements IUserService {
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
 	) {}
 	async createUser({ email, login, password }: UserRegisterDto): Promise<UserModel | null> {
-		const newUser = new User(email, login, '', 1);
+		const newUser = new User(email, login, '', ERowStatus.NEW);
 		const salt = this.configService.get('SALT');
 		await newUser.setPassword(password, Number(salt));
 		const existedUser = await this.usersRepository.find(email);
@@ -30,7 +31,7 @@ export class UserService implements IUserService {
 		if (!existedUser) {
 			return false;
 		}
-		const newUser = new User(existedUser.email, existedUser.login, existedUser.password);
+		const newUser = new User(existedUser.email, existedUser.login, existedUser.password, ERowStatus.NEW);
 		return newUser.comparePassword(password);
 	};
 

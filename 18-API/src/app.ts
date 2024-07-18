@@ -35,7 +35,7 @@ export class App {
 		@inject(TYPES.RowStatusController) private rowStatusesController: RowStatusesController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
-		@inject(TYPES.PrismaService) private prismaService: PrismaService,	
+		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 		@inject(TYPES.UserRolesController) private userRolesController: UserRolesController,
 		@inject(TYPES.WarehouseBalancesController) private warehoseBalancesController: WarehouseBalancesController
 	) {
