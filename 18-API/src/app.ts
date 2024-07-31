@@ -1,21 +1,20 @@
+import 'reflect-metadata';
 import express, { Express } from 'express';
 import { Server } from 'http';
 import { inject, injectable } from 'inversify';
-import { ExeptionFilter } from './errors/exeption.filter';
 import { ILogger } from './logger/logger.interface';
 import { TYPES } from './types';
 import { json } from 'body-parser';
-import 'reflect-metadata';
 import { IConfigService } from './config/config.service.interface';
 import { IExeptionFilter } from './errors/exeption.filter.interface';
-import { UserController } from './modules/users/users.controller';
 import { PrismaService } from './database/prisma.service';
 import { AuthMiddleware } from './common/auth.middleware';
-import { ItemController } from './modules/items/items.controller';
-import { PromotionController } from './modules/promotions/promotions.controller';
-import { RowStatusesController } from './modules/row-statuses/row-statuses.controller';
-import { UserRolesController } from './modules/user-roles/user-roles.controller';
-import { UserService } from './modules/users/users.service';
+import { UserController } from './modules/users';
+import { ItemController } from './modules/items';
+import { PromotionController } from './modules/promotions';
+import { ObjectStatusController } from './modules/object-statuses';
+import { UserRolesController } from './modules/user-roles';
+import { UserService } from './modules/users';
 import { WarehouseBalancesController } from './modules/warehouse-balances/warehouse-balance.controller';
 
 
@@ -32,7 +31,7 @@ export class App {
 		@inject(TYPES.ItemController) private itemController: ItemController,
 		@inject(TYPES.PromotionController) private promotionController: PromotionController,
 		@inject(TYPES.ItemTypesController) private itemTypesController: ItemController,
-		@inject(TYPES.RowStatusController) private rowStatusesController: RowStatusesController,
+		@inject(TYPES.ObjectStatusController) private objectStatusesController: ObjectStatusController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: IExeptionFilter,
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.PrismaService) private prismaService: PrismaService,
@@ -40,7 +39,7 @@ export class App {
 		@inject(TYPES.WarehouseBalancesController) private warehoseBalancesController: WarehouseBalancesController
 	) {
 		this.app = express();
-		this.port = 8000;
+		this.port = Number(this.configService.get('PORT'));
 	}
 
 	useMiddleware(): void {
@@ -53,10 +52,10 @@ export class App {
 		this.app.use('/users', this.userController.router);
 		this.app.use('/items', this.itemController.router);
 		this.app.use('/promotions', this.promotionController.router);
-		this.app.use('/itemtypes', this.itemTypesController.router);
-		this.app.use('/rowstatuses', this.rowStatusesController.router);
-		this.app.use('/userroles', this.userRolesController.router);
-		this.app.use('/warehosesbalances', this.warehoseBalancesController.router);
+		this.app.use('/item-types', this.itemTypesController.router);
+		this.app.use('/object-statuses', this.objectStatusesController.router);
+		this.app.use('/user-roles', this.userRolesController.router);
+		this.app.use('/warehose-balances', this.warehoseBalancesController.router);
 	}
 
 	useExeptionFilters(): void {

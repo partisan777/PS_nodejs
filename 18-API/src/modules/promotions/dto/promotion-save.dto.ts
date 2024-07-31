@@ -16,7 +16,7 @@ export class PromotionSaveDto {
     discoutnPercent: number;
 
     @IsNumber()
-    rowStatusNumber: number;
+    objectStatusId: number;
 
     @IsNumber()
     userId: number;

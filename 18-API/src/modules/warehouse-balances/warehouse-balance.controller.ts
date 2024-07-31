@@ -1,16 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { injectable, inject } from 'inversify';
 import { BaseController } from '../../common/base.controller';
-import { HTTPError } from '../../errors/http-error.class';
 import { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
 import 'reflect-metadata';
 import { ValidateMiddleware } from '../../common/validate.middleware';
-import { IConfigService } from '../../config/config.service.interface';
-import { IWarehouseBalancesService } from './warehouse-balances.service.interface';
-import { IWarehouseBalancesController } from './warehouse-balance.controller.interface';
+import { IWarehouseBalancesService } from './interfaces/warehouse-balances.service.interface';
+import { IWarehouseBalancesController } from './interfaces/warehouse-balance.controller.interface';
 import { AuthGuard } from '../../common/auth.guard';
-import { AuthMiddleware } from '../../common/auth.middleware';
 import { ERowStatus, EUserRoles } from '../../enum';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
 import { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
@@ -21,68 +18,63 @@ export class WarehouseBalancesController extends BaseController implements IWare
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.WarehouseBalancesService) private warehouseBalasncesService: IWarehouseBalancesService,
-		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		super(loggerService);
 		this.bindRoutes([
 			{
-				path: '/createBalance',
+				path: '/create-Balance',
 				method: 'post',
 				func: this.createBalance,
 				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.STOREKEEPER]), new ValidateMiddleware(WarehouseBalanceCreateDto)],
 			},
 			{
-				path: '/findBalanceById',
+				path: '/get-Balance-By-Id',
 				method: 'get',
-				func: this.findBalanceById,
+				func: this.getBalanceById,
 				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.STOREKEEPER])],
 			},
 			{
-				path: '/updateQuantity',
+				path: '/update-Quantity',
 				method: 'get',
 				func: this.updateBalanceQuantity,
 				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.STOREKEEPER])],
-				// middlewares: [new AuthGuard(), new CheckUserRole()],
-				// middlewares: [new AuthGuard(), new AuthMiddleware(this.configService.get('SECRET'))],
 			},
 			{
-				path: '/updateBalanceStatus',
+				path: '/update-Balance-Status',
 				method: 'post',
 				func: this.updateBalanceStatus,
 				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN])],
-				// middlewares: [new AuthGuard(), new CheckUserRole()],
 			},
 		]);
 	}
 
-	async createBalance(req: Request, res: Response, next: NextFunction): Promise<void> {
-		const {user, userReqId, userRole } = req;
+	async createBalance(req: Request, res: Response, next: NextFunction) {
+		const {user, userReqId, userRole } = req.userReqData;
 		const { name, description, itemId, quantity } = req.body;
-		const rowStatusNumber = ERowStatus.NEW;
+		const objectStatusId = ERowStatus.NEW;
 		const userId = userReqId;
-		const warehouseBalance = this.warehouseBalasncesService.createBalance({ name, description, userId, itemId, quantity, rowStatusNumber }, {user, userReqId, userRole });
+		const warehouseBalance = await this.warehouseBalasncesService.createBalance({ name, description, userId, itemId, quantity, objectStatusId }, {user, userReqId, userRole });
 		this.ok(res, warehouseBalance );
 	};
 
-	async findBalanceById(req: Request, res: Response, next: NextFunction): Promise<void> {
-		const {user, userReqId, userRole } = req;
+	async getBalanceById(req: Request, res: Response, next: NextFunction) {
+		const {user, userReqId, userRole } = req.userReqData;
 		const id = req.body.id;
-		const warehouseBalance = this.warehouseBalasncesService.findBalanceById(id, {user, userReqId, userRole });
+		const warehouseBalance = await this.warehouseBalasncesService.getBalanceById(id, {user, userReqId, userRole });
 		this.ok(res, warehouseBalance );
 	};
 
-	async updateBalanceQuantity(req: Request, res: Response, next: NextFunction): Promise<void> {
+	async updateBalanceQuantity(req: Request, res: Response, next: NextFunction) {
 		const { id, quantity } = req.body;
-		const {user, userReqId, userRole } = req;
-		const warehouseBalance = this.warehouseBalasncesService.updateBalanceQuantity(id, quantity, {user, userReqId, userRole });
+		const {user, userReqId, userRole } = req.userReqData;
+		const warehouseBalance = await this.warehouseBalasncesService.updateBalanceQuantity(id, quantity, {user, userReqId, userRole });
 		this.ok(res, warehouseBalance );
 	};
 
-	async updateBalanceStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+	async updateBalanceStatus(req: Request, res: Response, next: NextFunction) {
 		const { id, newStatusId } = req.body;
-		const {user, userReqId, userRole } = req;
-		const warehouseBalance = this.warehouseBalasncesService.updateBalanceStatus(id, newStatusId, {user, userReqId, userRole });
+		const {user, userReqId, userRole } = req.userReqData;
+		const warehouseBalance = await this.warehouseBalasncesService.updateBalanceStatus(id, newStatusId, {user, userReqId, userRole });
 		this.ok(res, warehouseBalance );
 	};
-
 };

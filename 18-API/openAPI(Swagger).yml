@@ -249,17 +249,17 @@ components:
         discoutnPercent:
           type: number
           description: процент скидки
-        rowStatusNumber:
+        objectStatusId:
           type: number
           description: цифровой номер статуса записи
         userId":
           type: number
           description: идентификатор пользователя
-        CreatedAt:
+        createdAt:
           type: string
           format: date-time
           description: дата создания акции
-        UpdatedAt:
+        updatedAt:
           type: string
           format: date-time
           description: дата создания акции
@@ -268,7 +268,7 @@ components:
         id:
           type: number
           description: идентификатор акции{
-        newStatusNumber:
+        newStatusId:
           type: number
           description: цифровой номер статуса записи
     NewPromotion:
@@ -283,7 +283,7 @@ components:
         discoutnPercent:
           type: number
           description: процент скидки
-        rowStatusNumber:
+        objectStatusId:
           type: number
           description: цифровой номер статуса записи
         userId":
@@ -301,7 +301,7 @@ components:
               properties:
                 name:
                   type: string
-                rowStatusNumber:
+                objectStatusId:
                   type: number
             sortParams:
               type: object
@@ -309,7 +309,7 @@ components:
                 name:
                   type: string
                   enum: ["asc", "desc"]
-                rowStatusNumber:
+                objectStatusId:
                   type: string
                   enum: ["asc", "desc"]
     UpdatePromotion:
@@ -327,17 +327,17 @@ components:
         discoutnPercent:
           type: number
           description: процент скидки
-        rowStatusNumber:
+        objectStatusId:
           type: number
           description: цифровой номер статуса записи
         userId":
           type: number
           description: идентификатор пользователя
-        CreatedAt:
+        createdAt:
           type: string
           format: date-time
           description: дата создания акции
-        UpdatedAt:
+        updatedAt:
           type: string
           format: date-time
           description: дата создания акции
@@ -378,13 +378,13 @@ components:
         userId":
           type: number
           description: идентификатор пользователя
-        rowStatusNumber:
+        objectStatusId:
           type: number
           description: цифровой номер статуса записи
-        itemTypeNumber:
+        itemTypeId:
           type: number
           description: цифровой номер типа товара
-        CreatedAt:
+        createdAt:
           type: string
           format: date-time
           description: дата создания товара
@@ -411,13 +411,13 @@ components:
             userId":
               type: number
               description: идентификатор пользователя
-            rowStatusNumber:
+            objectStatusId:
               type: number
               description: цифровой номер статуса записи
             quantity:
               type: number
               description: остаток товара
-            CreatedAt:
+            createdAt:
               type: string
               format: date-time
               description: дата создания записи
@@ -445,10 +445,10 @@ components:
         price:
           type: number
           description: цена товара
-        rowStatusNumber:
+        objectStatusId:
           type: number
           description: цифровой номер статуса записи
-        itemTypeNumber:
+        itemTypeId:
           type: number
           description: цифровой номер типа товара
     GetItems:
@@ -467,12 +467,12 @@ components:
             maxPrice:
               type: number
               description: максимальная цена
-            itemTypeNumber:
+            itemTypeId:
               type: array
               description: массив с кодами типов товара
               items:
                 type: number
-            rowStatusNumber:
+            objectStatusId:
               type: array
               description: массив с кодами статусов товара
               items:
@@ -489,11 +489,11 @@ components:
               type: string
               description: цена товара
               enum: ["asc", "desc"]
-            itemTypeNumber:
+            itemTypeId:
               type: string
               description: тип товара
               enum: ["asc", "desc"]
-            rowStatusNumber:
+            objectStatusId:
               type: string
               description: статус товара
               enum: ["asc", "desc"]
@@ -515,10 +515,10 @@ components:
         userId":
           type: number
           description: идентификатор пользователя
-        rowStatusNumber:
+        objectStatusId:
           type: number
           description: цифровой номер статуса записи
-        itemTypeNumber:
+        itemTypeId:
           type: number
           description: цифровой номер типа товара
     DeleteItemResponse:

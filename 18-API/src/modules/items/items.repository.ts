@@ -2,29 +2,44 @@ import { inject, injectable } from 'inversify';
 import { PrismaService } from '../../database/prisma.service';
 import { TYPES } from '../../types';
 import { Item } from './item.entity';
-import { IItemsRepository } from './items.repository.interface';
-import { ItemModel } from '@prisma/client';
+import { IItemsRepository } from './interfaces/items.repository.interface';
 import { IQueryParams } from '../../interfaces';
+import { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
+import { generateQueryParamsCondition } from '../../common/generateQueryParamsCondition';
+import { generateSortParamsCondition } from '../../common/generateSortParamsCondition';
+import { queryItemParamDict, sortItemParamDict } from './dictionares/dictionares'
 
 @injectable()
 export class ItemsRepository implements IItemsRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
-	async createItem(item: Item): Promise<ItemModel> {
-		return this.prismaService.client.itemModel.create({
+	async createItem(item: Item) {
+		const createdItem = await this.prismaService.client.itemModel.create({
 			data: {
 				description: item.description,
 				name: item.name,
 				userId: item.userId,
 				price: item.price,
-				itemTypeNumber: item.itemTypeNumber,
-				rowStatusNumber: item.rowStatusNumber
+				itemTypeId: item.itemTypeId,
+				objectStatusId: item.objectStatusId
 			},
 		});
+
+		if(!createdItem) return null;
+
+		return new Item (
+			createdItem.id,
+			createdItem.name,
+			createdItem.description,
+			createdItem.userId,
+			createdItem.itemTypeId,
+			createdItem.price,
+			createdItem.objectStatusId
+		);
 	};
 
-	async saveItem(item: Item): Promise<ItemModel> {
-		return this.prismaService.client.itemModel.update({
+	async updateItem(item: Item) {
+		const updatedItem = await this.prismaService.client.itemModel.update({
 			where: {
 				id: item.id
 			},
@@ -32,13 +47,24 @@ export class ItemsRepository implements IItemsRepository {
 				description: item.description,
 				name: item.name,
 				price: item.price,
-				itemTypeNumber: item.itemTypeNumber,
-				rowStatusNumber: item.rowStatusNumber
+				itemTypeId: item.itemTypeId,
+				objectStatusId: item.objectStatusId
 			}
 		});
+		if(!updatedItem) return null;
+
+		return new Item (
+			updatedItem.id,
+			updatedItem.name,
+			updatedItem.description,
+			updatedItem.userId,
+			updatedItem.itemTypeId,
+			updatedItem.price,
+			updatedItem.objectStatusId
+		);
 	};
 
-	async getItemById(id: number): Promise<ItemModel | null> {
+	async getItemById(id: number) {
 		return this.prismaService.client.itemModel.findFirst({
 			include: {
 				itemBalance: true,
@@ -49,20 +75,24 @@ export class ItemsRepository implements IItemsRepository {
 		});
 	};
 
-	async updateItemStatus(id: number, newStatusId: number): Promise<ItemModel> {
+	async updateItemStatus(id: number, newStatusId: number) {
 		return this.prismaService.client.itemModel.update({
 			where: {
 				id: id
 			},
 			data: {
-				rowStatusNumber: newStatusId,
+				objectStatusId: newStatusId,
 			},
 		});
 	};
 
-	async getItems(queryParams: IQueryParams) {
-		const whereCondition = {AND: queryParams.FIND};
-		const sortCondition = queryParams.SORT;
+	async getItems(searchParams: IFindItemParams, sortParams: ISortItemParams) {
+		const queryParam: IQueryParams = {FIND: [], SORT: []};
+		queryParam.FIND = generateQueryParamsCondition(searchParams, queryItemParamDict);
+		queryParam.SORT = generateSortParamsCondition(sortParams, sortItemParamDict);
+		queryParam.FIND.push({itemBalance:{quantity: {gt: 0}}});
+		const whereCondition = {AND: queryParam.FIND};
+		const sortCondition = queryParam.SORT;
 		return this.prismaService.client.itemModel.findMany({
 			include: {
 				itemBalance: true,

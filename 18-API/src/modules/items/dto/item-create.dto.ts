@@ -13,5 +13,5 @@ export class ItemCreateDto {
     price: number;
 
     @IsNumber()
-    itemTypeNumber: number;
+    itemTypeId: number;
 };

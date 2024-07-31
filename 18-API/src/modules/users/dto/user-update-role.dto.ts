@@ -5,5 +5,5 @@ export class UserUpdateRoleDto {
 	id: number;
 
 	@IsNumber()
-	newRoleNumber: number;
-}
+	newRoleId: number;
+};

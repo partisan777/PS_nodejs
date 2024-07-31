@@ -7,6 +7,6 @@ export class ItemUpdateSatusDto {
     id: number;
 
     @IsNumber()
-    newStatusNumber: number;
+    newStatusId: number;
 
 };

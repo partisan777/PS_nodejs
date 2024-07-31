@@ -8,5 +8,5 @@ export class UserRequestDataDto {
 	userReqId: number;
 
     @IsNumber()
-	userRole: number;	
+	userRole: number;
 };

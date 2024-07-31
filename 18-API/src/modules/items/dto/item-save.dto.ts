@@ -19,8 +19,8 @@ export class ItemSaveDto {
     userId: number;
 
     @IsNumber()
-    itemTypeNumber: number;
+    itemTypeId: number;
 
     @IsNumber()
-    rowStatusNumber: number;
+    objectStatusId: number;
 };

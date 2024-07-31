@@ -2,17 +2,13 @@
 import { inject, injectable } from 'inversify';
 import { IConfigService } from '../../config/config.service.interface';
 import { TYPES } from '../../types';
-import { IFindItemParams, ISortItemParams } from '../../interfaces';
+import { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
 import { ItemCreateDto } from './dto/item-create.dto';
 import { Item } from './item.entity';
-import { IItemService } from './items.service.interface';
+import { IItemService } from './interfaces/items.service.interface';
 import { ItemSaveDto } from './dto/item-save.dto';
 import { ERowStatus, EUserRoles } from '../../enum';
-import { generateQueryParamsCondition } from '../../common/generateQueryParamsCondition';
-import { queryItemParamDict, sortItemParamDict } from '../../dictionares';
-import { IItemsRepository } from './items.repository.interface';
-import { IQueryParams } from '../../interfaces';
-import { generateSortParamsCondition } from '../../common/generateSortParamsCondition';
+import { IItemsRepository } from './interfaces/items.repository.interface';
 import { UserRequestDataDto } from '../users/dto/user-data.dto';
 
 @injectable()
@@ -22,36 +18,29 @@ export class ItemService implements IItemService {
 		@inject(TYPES.ItemsRepository) private itemsRepository: IItemsRepository,
 	) {}
 
-	async updateItemStatus (id: number, newStatusId: number, userData: UserRequestDataDto) {
+	async updateItemStatus (id: number, newStatusId: number) {
 		return this.itemsRepository.updateItemStatus(id, newStatusId);
 	};
 
-    async createItem({ name, description, itemTypeNumber, price }: ItemCreateDto, userData: UserRequestDataDto) {
-	    const {user, userReqId, userRole } = userData;
+    async createItem({ name, description, itemTypeId, price }: ItemCreateDto, userData: UserRequestDataDto) {
+	    const { userReqId  } = userData;
 		const userId = userReqId;
-		const newItem = new Item(-20, name, description, userId, itemTypeNumber, price, ERowStatus.NEW);
+		const newItem = new Item(-20, name, description, userId, itemTypeId, price, ERowStatus.NEW);
 		return this.itemsRepository.createItem(newItem);
 	};
 
-	async saveItem (data: ItemSaveDto, userData: UserRequestDataDto) {
-		const {user, userReqId, userRole } = userData;
-		const { id, name, description, userId, itemTypeNumber, price, rowStatusNumber } = data;
-		const updItem = new Item(id, name, description, userId, itemTypeNumber, price, rowStatusNumber);
-		return this.itemsRepository.saveItem(updItem);
+	async updateItem (data: ItemSaveDto ) {
+		const { id, name, description, userId, itemTypeId, price, objectStatusId } = data;
+		const updItem = new Item(id, name, description, userId, itemTypeId, price, objectStatusId);
+		return this.itemsRepository.updateItem(updItem);
 	};
 
 	async getItemById(id: number) {
 	   return this.itemsRepository.getItemById(id);
 	};
 
-	async getItems(searchParams: IFindItemParams, sortParams: ISortItemParams, userData: UserRequestDataDto) {
-
-		const queryParam: IQueryParams = {FIND: [], SORT: []};
-		queryParam.FIND = generateQueryParamsCondition(searchParams, queryItemParamDict);
-		queryParam.SORT = generateSortParamsCondition(sortParams, sortItemParamDict);
-		queryParam.FIND.push({itemBalance:{quantity: {gt: 0}}});
-
-		return this.itemsRepository.getItems(queryParam);
+	async getItems(searchParams: IFindItemParams, sortParams: ISortItemParams) {
+		return this.itemsRepository.getItems(searchParams, sortParams);
 	};
 
 	async deleteItem(id: number, userData: UserRequestDataDto) {

@@ -12,7 +12,8 @@
     "test:e2e": "jest --config jest.e2e.config.ts",
     "generate": "prisma generate",
     "lint:fix": "eslint ./src/** --fix",
-    "build": "tsc"
+    "build": "tsc",
+    "seed": "node prisma/seed/seed.js"
   },
   "author": "",
   "license": "ISC",

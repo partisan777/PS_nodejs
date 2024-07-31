@@ -5,15 +5,16 @@ import { TYPES } from '../../types';
 import { Promotion } from './promotion.entity';
 import { PromotionCreateDto } from './dto/promotion-create.dto';
 import { PromotionSaveDto } from './dto/promotion-save.dto';
-import { IPromotionService } from './promotions.service.interface';
+import { IPromotionService } from './interfaces/promotions.service.interface';
 import { ERowStatus, EUserRoles } from '../../enum';
 import { UserRequestDataDto } from '../users/dto/user-data.dto';
 import { PromotionUpdateSatusDto } from './dto/promotion-update-status.dto';
-import { IPromotionsRepository } from './promotions.repository.interface';
+import { IPromotionsRepository } from './interfaces/promotions.repository.interface';
 import { generateSortParamsCondition } from '../../common/generateSortParamsCondition';
 import { generateQueryParamsCondition } from '../../common/generateQueryParamsCondition';
-import { IFindItemParams, IQueryParams, ISortItemParams } from '../../interfaces';
-import { queryPromotionParamDict, sortPromotionParamDict } from '../../dictionares';
+import { IQueryParams } from '../../interfaces';
+import { queryPromotionParamDict, sortPromotionParamDict } from './dictionares/dictionares';
+import { IFindItemParams, ISortItemParams } from '../items/interfaces/params.interface';
 
 
 @injectable()
@@ -29,7 +30,7 @@ export class PromotionService implements IPromotionService {
 	};
 
     async createPromotion(createPromotionData: PromotionCreateDto, userData: UserRequestDataDto ) {
-		const { name, description, discoutnPercent, rowStatusNumber } = createPromotionData;
+		const { name, description, discoutnPercent, objectStatusId } = createPromotionData;
 		const { user, userReqId, userRole } = userData;
 		const newPromotion = new Promotion(-20, name, description, discoutnPercent, ERowStatus.NEW, userReqId );
 	 	return this.promotionsRepository.createPromotion(newPromotion);
@@ -47,9 +48,8 @@ export class PromotionService implements IPromotionService {
 		};
 	};
 
-	async savePromotion(savePromotionData: PromotionSaveDto, userData: UserRequestDataDto) {
-		const { user, userReqId, userRole } = userData;
-		const {id, name, description, discoutnPercent, rowStatusNumber, userId } = savePromotionData;
+	async updatePromotion(savePromotionData: PromotionSaveDto,) {
+		const {id, name, description, discoutnPercent, objectStatusId, userId } = savePromotionData;
 
 		const existPromotion = this.promotionsRepository.getPromotionById(id);
 
@@ -57,8 +57,8 @@ export class PromotionService implements IPromotionService {
 			return null;
 		};
 
-		const updItem = new Promotion(id, name, description, discoutnPercent, rowStatusNumber, userId);
-		return this.promotionsRepository.savePromotion(updItem);
+		const updItem = new Promotion(id, name, description, discoutnPercent, objectStatusId, userId);
+		return this.promotionsRepository.updatePromotion(updItem);
 	};
 
 
@@ -77,7 +77,7 @@ export class PromotionService implements IPromotionService {
 	};
 
 
-	async deletePromotion(id: number, userData: UserRequestDataDto) {
+	async deletePromotion(id: number) {
 		const existPromotion = await this.promotionsRepository.getPromotionById(id);
 
 		if (!existPromotion || existPromotion === null) {

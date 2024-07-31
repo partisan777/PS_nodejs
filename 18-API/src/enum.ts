@@ -10,7 +10,7 @@ export enum ERowStatus {
     ACTIVE = 2,
     ON_CONSIDERATION = 3,
     DELETED = 4,
-    DISABLE = 5 
+    DISABLE = 5
 };
 
 export enum EItemTypes {

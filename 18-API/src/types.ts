@@ -16,15 +16,14 @@ export const TYPES = {
 	ItemTypesController: Symbol.for('ItemTypesController'),
 	ItemTypesService: Symbol.for('ItemTypesService'),
 	ItemTypesRepository: Symbol.for('ItemTypesRepository'),
-	RowStatusRepository: Symbol.for('RowStatusRepository'),
-	RowStatusService: Symbol.for('RowStatusService'),	
-	RowStatusController: Symbol.for('RowStatusController'),
+	ObjectStatusRepository: Symbol.for('ObjectStatusRepository'),
+	ObjectStatusService: Symbol.for('ObjectStatusService'),
+	ObjectStatusController: Symbol.for('ObjectStatusController'),
 	UserRolesRepository: Symbol.for('UserRoleRepository'),
 	UserRolesService: Symbol.for('UserRoleService'),
 	UserRolesController: Symbol.for('UserRoleController'),
 	WarehouseBalancesRepository: Symbol.for('WarehouseBalancesRepository'),
 	WarehouseBalancesService: Symbol.for('WarehouseBalancesService'),
 	WarehouseBalancesController: Symbol.for('WarehouseBalancesController')
-	
 };
 

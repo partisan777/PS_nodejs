@@ -1,17 +1,12 @@
 
-export class RowStatus {
+export class UserRole {
 	id:            number;
   	description:   string;
-  	roleNumber:  number;
-
 	constructor(
 		id:              number,
-		description:     string,
-		roleNumber:    number
+		description:     string
 	) {
 		this.id = id,
-		this.description = description,
-		this.roleNumber = roleNumber	
-	}
+		this.description = description
+	};
 };
-	

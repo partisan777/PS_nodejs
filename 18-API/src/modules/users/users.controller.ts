@@ -1,19 +1,18 @@
+import 'reflect-metadata';
 import { NextFunction, Request, Response } from 'express';
 import { injectable, inject } from 'inversify';
 import { BaseController } from '../../common/base.controller';
 import { HTTPError } from '../../errors/http-error.class';
 import { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
-import 'reflect-metadata';
-import { IUserController } from './users.controller.interface';
+import { IUserController } from './interfaceses/users.controller.interface';
 import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { ValidateMiddleware } from '../../common/validate.middleware';
 import { sign } from 'jsonwebtoken';
 import { IConfigService } from '../../config/config.service.interface';
-import { IUserService } from './users.service.interface';
+import { IUserService } from './interfaceses/users.service.interface';
 import { AuthGuard } from '../../common/auth.guard';
-import { AuthMiddleware } from '../../common/auth.middleware';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
 import { EUserRoles } from '../../enum';
 import { UserUpdateRoleDto } from './dto/user-update-role.dto';
@@ -47,9 +46,9 @@ export class UserController extends BaseController implements IUserController {
 				middlewares: [new AuthGuard()],
 			},
 			{
-				path: '/updateuserrole',
+				path: '/update-user-role',
 				method: 'post',
-				func: this.updateuserrole,
+				func: this.updateUserRole,
 				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN]), new ValidateMiddleware(UserUpdateRoleDto)],
 			},
 		]);
@@ -61,8 +60,6 @@ export class UserController extends BaseController implements IUserController {
 		next: NextFunction,
 	): Promise<void> {
 		const result = await this.userService.validateUser(req.body);
-		console.log(req.body);
-		console.log(result);
 		if (!result) {
 			return next(new HTTPError(401, 'ошибка авторизации', 'login'));
 		}
@@ -84,7 +81,7 @@ export class UserController extends BaseController implements IUserController {
 
 	async info(req: Request, res: Response, next: NextFunction): Promise<void> {
 		const userInfo = await this.userService.getUserInfo(req.user);
-		this.ok(res, { email: userInfo?.email, id: userInfo?.id, login: userInfo?.login, userRole: userInfo?.userRoleNumber });
+		this.ok(res, { email: userInfo?.email, id: userInfo?.id, login: userInfo?.login, userRole: userInfo?.userRoleId });
 	};
 
 	private signJWT(email: string, secret: string): Promise<string> {
@@ -108,9 +105,9 @@ export class UserController extends BaseController implements IUserController {
 		});
 	};
 
-	async updateuserrole(req: Request, res: Response, next: NextFunction): Promise<void> {
+	async updateUserRole(req: Request, res: Response, next: NextFunction): Promise<void> {
 		const {id, newRoleNumber} = req.body;
-		const user = await this.userService.updateuserrole(id, newRoleNumber);
-		this.ok(res, { email: user?.email, id: user?.id, login: user?.login, userRole: user?.userRoleNumber });
+		const user = await this.userService.updateUserRole(id, newRoleNumber);
+		this.ok(res, { email: user?.email, id: user?.id, login: user?.login, userRole: user?.userRoleId });
 	};
 };

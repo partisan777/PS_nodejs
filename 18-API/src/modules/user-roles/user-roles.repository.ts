@@ -1,22 +1,37 @@
 import { inject, injectable } from 'inversify';
 import { PrismaService } from '../../database/prisma.service';
 import { TYPES } from '../../types';
-import { UserRoleModel } from '@prisma/client';
-import { IUserRolesRepository } from './user-roles.repository.interface';
+import { IUserRolesRepository } from './interfaces/user-roles.repository.interface';
+import { UserRole } from './user-role.entity';
 
 @injectable()
 export class UserRolesRepository implements IUserRolesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
-	
-	async getUserRoleByNumber(roleNumber: number): Promise<UserRoleModel | null> {
-		return this.prismaService.client.userRoleModel.findFirst({
+
+	async getUserRoleById(roleId: number) {
+		const existUserRole = await this.prismaService.client.userRoleModel.findFirst({
 			where: {
-				roleNumber: roleNumber				
+				id: roleId
 			},
 		});
+		if(!existUserRole) return null;
+		return new UserRole(
+			existUserRole.id,
+			existUserRole.description
+		)
 	};
-	
+
 	async getUserRoles() {
-		return this.prismaService.client.userRoleModel.findMany();
-	};
-};
+		const existUsersRoles = await this.prismaService.client.userRoleModel.findMany();
+
+		if(!existUsersRoles) return null;
+
+		return existUsersRoles.map(role => {
+				return new UserRole(
+					role.id,
+					role.description
+				);
+			}
+		);
+	}
+}

@@ -13,6 +13,6 @@ export class PromotionCreateDto {
     discoutnPercent: number;
 
     @IsNumber()
-    rowStatusNumber: number;
+    objectStatusId: number;
 
 };

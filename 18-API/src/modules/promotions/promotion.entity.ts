@@ -1,18 +1,19 @@
+import { Decimal } from "@prisma/client/runtime/library";
 
 export class Promotion {
 	id:              number;
 	name:            string;
 	description:     string;
-	discoutnPercent: number;
-	rowStatusNumber:     number;
+	discoutnPercent: number | Decimal;
+	objectStatusId:  number;
 	userId:          number;
 
 	constructor(
 		id:              number,
 		name:            string,
 		description:     string,
-		discoutnPercent: number,
-		rowStatusNumber: number,
+		discoutnPercent: number | Decimal,
+		objectStatusId:  number,
 		userId:          number
 	)
 	{
@@ -20,7 +21,7 @@ export class Promotion {
 		this.name = name,
 		this.description = description,
 		this.discoutnPercent = discoutnPercent,
-		this.rowStatusNumber = rowStatusNumber,
+		this.objectStatusId = objectStatusId,
 		this.userId = userId
 	};
 

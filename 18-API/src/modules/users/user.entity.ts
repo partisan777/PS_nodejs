@@ -1,36 +1,29 @@
 import { compare, hash } from 'bcryptjs';
 
 export class User {
-	private _password: string;
-	private userRoleNumber: number;
-	private rowStatusNumber?: number;
+	id: number;
+	email: string;
+	login: string;
+	password: string;
+	_password: string;
+	userRoleId: number;
+	objectStatusId: number
 	constructor(
-		private readonly _email: string,
-		private readonly _login: string,
-		passwordHash?: string,
-		rowStatusNumber?: number
+		id: number,
+		email: string,
+		login: string,
+		password: string,
+		passwordHash: string,
+		objectStatusId: number,
+		userRoleId:  number
 	) {
-		if (passwordHash) {
-			this._password = passwordHash;
-		}
+		this.id = id,
+		this.email = email,
+		this.login = login,
+		this.password = password,
+		this.userRoleId = userRoleId,
+		this.objectStatusId = objectStatusId
 	}
-
-	get email(): string {
-		return this._email;
-	};
-
-	get login(): string {
-		return this._login;
-	};
-
-	get password(): string {
-		return this._password;
-	};
-
-	get userRole(): number {
-		return this.userRoleNumber;
-	};
-
 	public async setPassword(pass: string, salt: number): Promise<void> {
 		this._password = await hash(pass, salt);
 	};
@@ -38,15 +31,4 @@ export class User {
 	public async comparePassword(pass: string): Promise<boolean> {
 		return compare(pass, this._password);
 	};
-}
-
-/*
-model User {
-	id
-	login
-	email
-	password
-	rowStatusNumber
-	userRole
-  }
-*/
+};

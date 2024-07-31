@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -18,27 +12,26 @@ model UserModel {
   login             String
   email             String
   password          String
-  rowStatus         RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
-  rowStatusNumber   Int @map("row_status_number")
-  userRole          UserRoleModel  @relation(fields: [userRoleNumber], references: [roleNumber])
-  userRoleNumber    Int @map("user_role_number")
+  objectStatus      ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
+  objectStatusId    Int @map("object_status_id")
+  userRole          UserRoleModel  @relation(fields: [userRoleId], references: [id])
+  userRoleId        Int @map("user_role_id")
   promotion         PromotionModel[]
   item              ItemModel[]
-  WarehouseBalances WarehouseBalanceModel[]
-  CreatedAt         DateTime @default(now()) @map("created_at")
-  UpdatedAt         DateTime @default(now()) @map("updated_at")
+  warehouseBalances WarehouseBalanceModel[]
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @default(now()) @map("updated_at")
 }
 
 model UserRoleModel {
   id          Int @id @default(autoincrement())
   description String
   user        UserModel[]
-  roleNumber  Int @unique @map("role_number")
-  CreatedAt   DateTime @default(now()) @map("created_at")
-  UpdatedAt   DateTime @default(now()) @map("updated_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
 }
 
-model RowStatusModel {
+model ObjectStatusModel {
   id                Int @id @default(autoincrement())
   description       String
   user              UserModel[]
@@ -46,9 +39,8 @@ model RowStatusModel {
   promotion         PromotionModel[]
   itemType          ItemTypeModel[]
   warehouseBalance  WarehouseBalanceModel[]
-  statusNumber      Int @unique @map("status_number")
-  CreatedAt         DateTime @default(now()) @map("created_at")
-  UpdatedAt         DateTime @default(now()) @map("updated_at")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @default(now()) @map("updated_at")
 }
 
 model ItemModel {
@@ -58,24 +50,23 @@ model ItemModel {
   price           Decimal
   user            UserModel @relation(fields: [userId], references: [id])
   userId          Int @map("user_id")
-  itemType        ItemTypeModel @relation(fields: [itemTypeNumber], references: [itemTypeNumber])
-  itemTypeNumber  Int @map("item_type_number")
-  rowStatus       RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
-  rowStatusNumber Int @map("row_status_number")
+  itemType        ItemTypeModel @relation(fields: [itemTypeId], references: [id])
+  itemTypeId      Int @map("item_type_id")
+  objectStatus    ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
+  objectStatusId  Int @map("object_status_id")
   itemBalance     WarehouseBalanceModel?
-  CreatedAt       DateTime @default(now()) @map("created_at")
-  UpdatedAt       DateTime @default(now()) @map("updated_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
 }
 
 model ItemTypeModel {
   id              Int @id @default(autoincrement())
   description     String
   item            ItemModel[]
-  itemTypeNumber  Int @unique @map("item_type_number")
-  rowStatus       RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
-  rowStatusNumber Int @map("row_status_number")
-  CreatedAt       DateTime @default(now()) @map("created_at")
-  UpdatedAt       DateTime @default(now()) @map("updated_at")
+  objectStatus    ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
+  objectStatusId  Int @map("object_status_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
 }
 
 model PromotionModel {
@@ -83,12 +74,12 @@ model PromotionModel {
   name            String
   description     String
   discoutnPercent Decimal @map("discoutn_percent")
-  rowStatus       RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
-  rowStatusNumber Int @map("row_status_number")
+  objectStatus    ObjectStatusModel @relation(fields: [], references: [id])
+    Int @map("object_status_id")
   user            UserModel @relation(fields: [userId], references: [id])
   userId          Int @map("user_id")
-  CreatedAt       DateTime @default(now()) @map("created_at")
-  UpdatedAt       DateTime @default(now()) @map("updated_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
 }
 
 model WarehouseBalanceModel {
@@ -97,12 +88,11 @@ model WarehouseBalanceModel {
   description     String
   item            ItemModel @relation(fields: [itemId], references: [id])
   itemId          Int @unique @map("item_id")
-  rowStatus       RowStatusModel @relation(fields: [rowStatusNumber], references: [statusNumber])
-  rowStatusNumber Int @map("row_status_number")
+  objectStatus    ObjectStatusModel @relation(fields: [], references: [id])
+    Int @map("object_status_id")
   user            UserModel @relation(fields: [userId], references: [id])
   userId          Int @map("user_id")
   quantity        Decimal
-  CreatedAt       DateTime @default(now()) @map("created_at")
-  UpdatedAt       DateTime @default(now()) @map("updated_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
 }
-
