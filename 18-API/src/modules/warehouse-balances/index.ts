@@ -6,4 +6,12 @@ import { WarehouseBalance } from "./warehouse-balance.entity";
 import { WarehouseBalancesRepository } from "./warehouse-balances.repository";
 import { WarehouseBalancesService } from "./warehouse-balances.service";
 
-export { IWarehouseBalancesController, IWarehouseBalancesRepository, IWarehouseBalancesService, WarehouseBalancesController, WarehouseBalance,WarehouseBalancesRepository, WarehouseBalancesService };
+export {
+	IWarehouseBalancesController,
+	IWarehouseBalancesRepository,
+	IWarehouseBalancesService,
+	WarehouseBalancesController,
+	WarehouseBalance,
+	WarehouseBalancesRepository,
+	WarehouseBalancesService,
+};

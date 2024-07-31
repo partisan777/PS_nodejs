@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
-import { PrismaService } from '../../database/prisma.service';
+import type { PrismaService } from '../../database/prisma.service';
 import { TYPES } from '../../types';
-import { IObjectStatusRepository } from './interfaces/object-statuses.repository.interface';
+import type { IObjectStatusRepository } from './interfaces/object-statuses.repository.interface';
 import { ObjectStatus } from './object-status.entity';
 
 @injectable()

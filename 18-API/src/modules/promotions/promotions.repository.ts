@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
-import { PrismaService } from '../../database/prisma.service';
+import type { PrismaService } from '../../database/prisma.service';
+import type { IQueryParams } from '../../interfaces';
 import { TYPES } from '../../types';
-import { IPromotionsRepository } from './interfaces/promotions.repository.interface';
+import type { IPromotionsRepository } from './interfaces/promotions.repository.interface';
 import { Promotion } from './promotion.entity';
-import { IQueryParams } from '../../interfaces';
 
 
 @injectable()

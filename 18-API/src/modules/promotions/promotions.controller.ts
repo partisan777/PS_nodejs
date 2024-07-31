@@ -1,20 +1,20 @@
 import 'reflect-metadata';
-import { NextFunction, Request, Response } from 'express';
-import { injectable, inject } from 'inversify';
-import { BaseController } from '../../common/base.controller';
-import { ILogger } from '../../logger/logger.interface';
-import { TYPES } from '../../types';
-import { IPromotionController } from './interfaces/promotions.controller.interface';
-import { ValidateMiddleware } from '../../common/validate.middleware';
-import { IPromotionService } from './interfaces/promotions.service.interface';
+import type { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { AuthGuard } from '../../common/auth.guard';
-import { PromotionSaveDto } from './dto/promotion-save.dto';
-import { PromotionCreateDto } from './dto/promotion-create.dto';
+import { BaseController } from '../../common/base.controller';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
+import { ValidateMiddleware } from '../../common/validate.middleware';
 import { EUserRoles } from '../../enum';
-import { PromotionUpdateSatusDto } from './dto/promotion-update-status.dto';
+import type { ILogger } from '../../logger/logger.interface';
+import { TYPES } from '../../types';
+import { PromotionCreateDto } from './dto/promotion-create.dto';
 import { GetRequestPromotionDto } from './dto/promotion-get.dto';
-import { IFindPromotionParams, ISortPromotionParams } from './interfaces/params.interface';
+import { PromotionSaveDto } from './dto/promotion-save.dto';
+import { PromotionUpdateSatusDto } from './dto/promotion-update-status.dto';
+import type { IFindPromotionParams, ISortPromotionParams } from './interfaces/params.interface';
+import type { IPromotionController } from './interfaces/promotions.controller.interface';
+import type { IPromotionService } from './interfaces/promotions.service.interface';
 
 @injectable()
 export class PromotionController extends BaseController implements IPromotionController {
@@ -89,8 +89,8 @@ export class PromotionController extends BaseController implements IPromotionCon
 	};
 
 	async getPromotions(req: Request, res: Response, next: NextFunction) {
-		let sortParams: ISortPromotionParams = req.body.getParams?.sortParams || {};
-		let searchParams: IFindPromotionParams = req.body.getParams?.searchParams || {};
+		const sortParams: ISortPromotionParams = req.body.getParams?.sortParams || {};
+		const searchParams: IFindPromotionParams = req.body.getParams?.searchParams || {};
 		const promotions = await this.promotionService.getPromotions(searchParams, sortParams, req.userReqData );
 		this.ok(res, promotions );
 	};

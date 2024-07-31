@@ -1,9 +1,9 @@
-import { Decimal } from "@prisma/client/runtime/library";
+import type { Decimal } from "@prisma/client/runtime/library";
 
 export class WarehouseBalance {
 	id: number;
 	name: string;
-  	description: string;
+	description: string;
 	userId: number;
 	itemId: number;
 	quantity: number | Decimal;
@@ -11,11 +11,11 @@ export class WarehouseBalance {
 	constructor(
 		id: number,
 		name: string,
-  		description: string,
+		description: string,
 		userId: number,
 		itemId: number,
 		quantity: number | Decimal,
-		objectStatusId: number
+		objectStatusId: number,
 	) {
 		this.id = id;
 		this.name = name;
@@ -24,5 +24,5 @@ export class WarehouseBalance {
 		this.itemId = itemId;
 		this.quantity = quantity;
 		this.objectStatusId = objectStatusId;
-	};
-};
+	}
+}

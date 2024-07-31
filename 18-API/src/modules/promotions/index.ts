@@ -6,4 +6,12 @@ import { PromotionController } from "./promotions.controller";
 import { PromotionsRepository } from "./promotions.repository";
 import { PromotionService } from "./promotions.service";
 
-export { IPromotionController, IPromotionsRepository, IPromotionService, Promotion,PromotionController, PromotionsRepository, PromotionService };
+export {
+	IPromotionController,
+	IPromotionsRepository,
+	IPromotionService,
+	Promotion,
+	PromotionController,
+	PromotionsRepository,
+	PromotionService,
+};

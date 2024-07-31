@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
-import { PrismaService } from '../../database/prisma.service';
+import type { PrismaService } from '../../database/prisma.service';
 import { TYPES } from '../../types';
-import { IUserRolesRepository } from './interfaces/user-roles.repository.interface';
+import type { IUserRolesRepository } from './interfaces/user-roles.repository.interface';
 import { UserRole } from './user-role.entity';
 
 @injectable()

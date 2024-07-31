@@ -1,6 +1,10 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from "express";
 
 export interface IObjectStatusController {
-	getObjectStatusById: (req: Request, res: Response, next: NextFunction) => void;
+	getObjectStatusById: (
+		req: Request,
+		res: Response,
+		next: NextFunction,
+	) => void;
 	getObjectStatuses: (req: Request, res: Response, next: NextFunction) => void;
-};
+}

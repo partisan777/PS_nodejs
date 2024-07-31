@@ -1,9 +1,9 @@
-import { Response, Router } from 'express';
-import { injectable } from 'inversify';
-import { ILogger } from '../logger/logger.interface';
-import { ExpressReturnType, IControllerRoute } from './route.interface';
-export { Router } from 'express';
-import 'reflect-metadata';
+import { type Response, Router } from "express";
+import { injectable } from "inversify";
+import type { ILogger } from "../logger/logger.interface";
+import type { ExpressReturnType, IControllerRoute } from "./route.interface";
+export { Router } from "express";
+import "reflect-metadata";
 
 @injectable()
 export abstract class BaseController {
@@ -18,7 +18,7 @@ export abstract class BaseController {
 	}
 
 	public send<T>(res: Response, code: number, message: T): ExpressReturnType {
-		res.type('application/json');
+		res.type("application/json");
 		return res.status(code).json(message);
 	}
 

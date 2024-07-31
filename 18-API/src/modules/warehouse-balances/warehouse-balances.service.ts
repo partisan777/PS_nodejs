@@ -1,13 +1,13 @@
 import { WarehouseBalanceModel } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../types';
-import { WarehouseBalance } from './warehouse-balance.entity';
-import { IWarehouseBalancesRepository } from './interfaces/warehouse-balances.repository.interface';
-import { IWarehouseBalancesService } from './interfaces/warehouse-balances.service.interface';
-import { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
 import { ERowStatus } from '../../enum';
-import { UserRequestDataDto } from '../users/dto/user-data.dto';
-import { ILogger } from '../../logger/logger.interface';
+import type { ILogger } from '../../logger/logger.interface';
+import { TYPES } from '../../types';
+import type { UserRequestDataDto } from '../users/dto/user-data.dto';
+import type { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
+import type { IWarehouseBalancesRepository } from './interfaces/warehouse-balances.repository.interface';
+import type { IWarehouseBalancesService } from './interfaces/warehouse-balances.service.interface';
+import { WarehouseBalance } from './warehouse-balance.entity';
 
 
 @injectable()

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from "express";
 
 export interface IItemController {
 	createItem: (req: Request, res: Response, next: NextFunction) => void;
@@ -7,4 +7,4 @@ export interface IItemController {
 	updateItem: (req: Request, res: Response, next: NextFunction) => void;
 	updateItemStatus: (req: Request, res: Response, next: NextFunction) => void;
 	deleteItem: (req: Request, res: Response, next: NextFunction) => void;
-};
+}

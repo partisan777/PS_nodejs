@@ -1,21 +1,21 @@
 import 'reflect-metadata';
-import express, { Express } from 'express';
-import { Server } from 'http';
-import { inject, injectable } from 'inversify';
-import { ILogger } from './logger/logger.interface';
-import { TYPES } from './types';
+import type { Server } from 'http';
 import { json } from 'body-parser';
-import { IConfigService } from './config/config.service.interface';
-import { IExeptionFilter } from './errors/exeption.filter.interface';
-import { PrismaService } from './database/prisma.service';
+import express, { type Express } from 'express';
+import { inject, injectable } from 'inversify';
 import { AuthMiddleware } from './common/auth.middleware';
-import { UserController } from './modules/users';
-import { ItemController } from './modules/items';
-import { PromotionController } from './modules/promotions';
-import { ObjectStatusController } from './modules/object-statuses';
-import { UserRolesController } from './modules/user-roles';
-import { UserService } from './modules/users';
-import { WarehouseBalancesController } from './modules/warehouse-balances/warehouse-balance.controller';
+import type { IConfigService } from './config/config.service.interface';
+import type { PrismaService } from './database/prisma.service';
+import type { IExeptionFilter } from './errors/exeption.filter.interface';
+import type { ILogger } from './logger/logger.interface';
+import type { ItemController } from './modules/items';
+import type { ObjectStatusController } from './modules/object-statuses';
+import type { PromotionController } from './modules/promotions';
+import type { UserRolesController } from './modules/user-roles';
+import type { UserController } from './modules/users';
+import type { UserService } from './modules/users';
+import type { WarehouseBalancesController } from './modules/warehouse-balances/warehouse-balance.controller';
+import { TYPES } from './types';
 
 
 @injectable()

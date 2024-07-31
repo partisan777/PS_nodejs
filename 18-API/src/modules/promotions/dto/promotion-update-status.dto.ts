@@ -1,12 +1,9 @@
-import { IsNumber } from 'class-validator';
-
+import { IsNumber } from "class-validator";
 
 export class PromotionUpdateSatusDto {
-	
-    @IsNumber()
-    id: number;
+	@IsNumber()
+	id: number;
 
-    @IsNumber()
-    newStatusNumber: number;
-
-};
+	@IsNumber()
+	newStatusNumber: number;
+}

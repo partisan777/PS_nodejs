@@ -6,4 +6,12 @@ import { ItemController } from "./items.controller";
 import { ItemsRepository } from "./items.repository";
 import { ItemService } from "./items.service";
 
-export { IItemController, IItemsRepository, IItemService, Item, ItemController, ItemsRepository, ItemService };
+export {
+	IItemController,
+	IItemsRepository,
+	IItemService,
+	Item,
+	ItemController,
+	ItemsRepository,
+	ItemService,
+};

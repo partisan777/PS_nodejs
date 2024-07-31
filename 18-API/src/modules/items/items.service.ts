@@ -1,15 +1,15 @@
 
 import { inject, injectable } from 'inversify';
-import { IConfigService } from '../../config/config.service.interface';
-import { TYPES } from '../../types';
-import { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
-import { ItemCreateDto } from './dto/item-create.dto';
-import { Item } from './item.entity';
-import { IItemService } from './interfaces/items.service.interface';
-import { ItemSaveDto } from './dto/item-save.dto';
+import type { IConfigService } from '../../config/config.service.interface';
 import { ERowStatus, EUserRoles } from '../../enum';
-import { IItemsRepository } from './interfaces/items.repository.interface';
-import { UserRequestDataDto } from '../users/dto/user-data.dto';
+import { TYPES } from '../../types';
+import type { UserRequestDataDto } from '../users/dto/user-data.dto';
+import type { ItemCreateDto } from './dto/item-create.dto';
+import type { ItemSaveDto } from './dto/item-save.dto';
+import type { IItemsRepository } from './interfaces/items.repository.interface';
+import type { IItemService } from './interfaces/items.service.interface';
+import type { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
+import { Item } from './item.entity';
 
 @injectable()
 export class ItemService implements IItemService {

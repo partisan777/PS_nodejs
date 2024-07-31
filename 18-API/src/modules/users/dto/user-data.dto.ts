@@ -1,12 +1,12 @@
-import { IsEmail, IsNumber } from 'class-validator';
+import { IsEmail, IsNumber } from "class-validator";
 
 export class UserRequestDataDto {
-	@IsEmail({}, { message: 'Неверно указан email' })
+	@IsEmail({}, { message: "Неверно указан email" })
 	user: string;
 
 	@IsNumber()
 	userReqId: number;
 
-    @IsNumber()
+	@IsNumber()
 	userRole: number;
-};
+}

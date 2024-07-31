@@ -1,12 +1,12 @@
 import 'reflect-metadata';
-import { NextFunction, Request, Response } from 'express';
-import { injectable, inject } from 'inversify';
+import type { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { BaseController } from '../../common/base.controller';
-import { ILogger } from '../../logger/logger.interface';
+import type { IConfigService } from '../../config/config.service.interface';
+import type { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
-import { IConfigService } from '../../config/config.service.interface';
-import { IItemTypesController } from './interfaces/item-types.controller.interface';
-import { IItemTypesService } from './interfaces/item-types.service.interface';
+import type { IItemTypesController } from './interfaces/item-types.controller.interface';
+import type { IItemTypesService } from './interfaces/item-types.service.interface';
 
 @injectable()
 export class ItemTypesController extends BaseController implements IItemTypesController {

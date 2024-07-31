@@ -6,4 +6,12 @@ import { UserRolesController } from "./user-roles.controller";
 import { UserRolesRepository } from "./user-roles.repository";
 import { UserRolesService } from "./user-roles.service";
 
-export { IUserRolesController, IUserRolesRepository, IUserRolesService, UserRole, UserRolesController, UserRolesRepository, UserRolesService };
+export {
+	IUserRolesController,
+	IUserRolesRepository,
+	IUserRolesService,
+	UserRole,
+	UserRolesController,
+	UserRolesRepository,
+	UserRolesService,
+};

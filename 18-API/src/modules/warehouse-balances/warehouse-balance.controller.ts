@@ -1,16 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
-import { injectable, inject } from 'inversify';
+import type { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { BaseController } from '../../common/base.controller';
-import { ILogger } from '../../logger/logger.interface';
+import type { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
 import 'reflect-metadata';
-import { ValidateMiddleware } from '../../common/validate.middleware';
-import { IWarehouseBalancesService } from './interfaces/warehouse-balances.service.interface';
-import { IWarehouseBalancesController } from './interfaces/warehouse-balance.controller.interface';
 import { AuthGuard } from '../../common/auth.guard';
-import { ERowStatus, EUserRoles } from '../../enum';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
+import { ValidateMiddleware } from '../../common/validate.middleware';
+import { ERowStatus, EUserRoles } from '../../enum';
 import { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
+import type { IWarehouseBalancesController } from './interfaces/warehouse-balance.controller.interface';
+import type { IWarehouseBalancesService } from './interfaces/warehouse-balances.service.interface';
 
 
 @injectable()

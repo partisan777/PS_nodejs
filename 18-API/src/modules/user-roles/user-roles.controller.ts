@@ -1,14 +1,14 @@
 import 'reflect-metadata';
-import { NextFunction, Request, Response } from 'express';
-import { injectable, inject } from 'inversify';
-import { BaseController } from '../../common/base.controller';
-import { ILogger } from '../../logger/logger.interface';
-import { TYPES } from '../../types';
-import { IUserRolesController } from './interfaces/user-roles.controller.interface';
-import { IUserRolesService } from './interfaces/user-roles.service.interface';
+import type { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { AuthGuard } from '../../common/auth.guard';
+import { BaseController } from '../../common/base.controller';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
 import { EUserRoles } from '../../enum';
+import type { ILogger } from '../../logger/logger.interface';
+import { TYPES } from '../../types';
+import type { IUserRolesController } from './interfaces/user-roles.controller.interface';
+import type { IUserRolesService } from './interfaces/user-roles.service.interface';
 
 
 @injectable()

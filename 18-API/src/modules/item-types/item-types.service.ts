@@ -2,7 +2,7 @@
 import { inject, injectable } from 'inversify';
 import { IConfigService } from '../../config/config.service.interface';
 import { TYPES } from '../../types';
-import { IItemTypesService } from './interfaces/item-types.service.interface';
+import type { IItemTypesService } from './interfaces/item-types.service.interface';
 
 @injectable()
 export class ItemTypesService implements IItemTypesService {

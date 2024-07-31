@@ -4,7 +4,7 @@ export interface IFindItemParams {
 	maxPrice?: number;
 	itemTypeId?: number[];
 	objectStatusId?: number[];
-};
+}
 
 export interface ISortItemParams {
 	name?: "asc" | "desc";
@@ -12,4 +12,4 @@ export interface ISortItemParams {
 	maxPrice?: "asc" | "desc";
 	itemTypeId?: "asc" | "desc";
 	objectStatusId?: "asc" | "desc";
-};
+}

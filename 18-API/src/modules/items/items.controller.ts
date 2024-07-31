@@ -1,20 +1,20 @@
 import 'reflect-metadata';
-import { NextFunction, Request, Response } from 'express';
-import { injectable, inject } from 'inversify';
-import { BaseController } from '../../common/base.controller';
-import { ILogger } from '../../logger/logger.interface';
-import { TYPES } from '../../types';
-import { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
-import { IItemController } from './interfaces/items.controller.interface';
-import { ValidateMiddleware } from '../../common/validate.middleware';
-import { IConfigService } from '../../config/config.service.interface';
-import { IItemService } from './interfaces/items.service.interface';
-import { ItemUpdateSatusDto } from './dto/item-update-status.dto';
+import type { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { AuthGuard } from '../../common/auth.guard';
+import { BaseController } from '../../common/base.controller';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
+import { ValidateMiddleware } from '../../common/validate.middleware';
+import type { IConfigService } from '../../config/config.service.interface';
 import { EUserRoles } from '../../enum';
+import type { ILogger } from '../../logger/logger.interface';
+import { TYPES } from '../../types';
 import { ItemCreateDto } from './dto/item-create.dto';
 import { GetItemDto } from './dto/item-get.dto';
+import { ItemUpdateSatusDto } from './dto/item-update-status.dto';
+import type { IItemController } from './interfaces/items.controller.interface';
+import type { IItemService } from './interfaces/items.service.interface';
+import type { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
 
 @injectable()
 export class ItemController extends BaseController implements IItemController {
@@ -89,8 +89,8 @@ export class ItemController extends BaseController implements IItemController {
 	};
 
 	async getItems(req: Request, res: Response, next: NextFunction) {
-		let sortParams: ISortItemParams = req.body.getParams?.sortParams || {};
-		let searchParams: IFindItemParams = req.body.getParams?.searchParams || {};
+		const sortParams: ISortItemParams = req.body.getParams?.sortParams || {};
+		const searchParams: IFindItemParams = req.body.getParams?.searchParams || {};
 		const items = await this.itemService.getItems(searchParams, sortParams );
 		this.ok( res, items );
 	};

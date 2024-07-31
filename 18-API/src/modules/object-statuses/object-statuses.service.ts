@@ -1,9 +1,9 @@
 
 import { inject, injectable } from 'inversify';
-import { IConfigService } from '../../config/config.service.interface';
+import type { IConfigService } from '../../config/config.service.interface';
 import { TYPES } from '../../types';
-import { IObjectStatusService } from './interfaces/object-statuses.service.interface';
-import { ObjectStatusRepository } from './object-statuses.repository';
+import type { IObjectStatusService } from './interfaces/object-statuses.service.interface';
+import type { ObjectStatusRepository } from './object-statuses.repository';
 
 @injectable()
 export class ObjectStatusService implements IObjectStatusService {

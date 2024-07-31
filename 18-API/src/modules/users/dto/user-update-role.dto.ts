@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber } from "class-validator";
 
 export class UserUpdateRoleDto {
 	@IsNumber()
@@ -6,4 +6,4 @@ export class UserUpdateRoleDto {
 
 	@IsNumber()
 	newRoleId: number;
-};
+}

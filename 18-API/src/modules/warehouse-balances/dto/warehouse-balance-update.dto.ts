@@ -1,5 +1,5 @@
-import { Decimal } from '@prisma/client/runtime/library';
-import { IsNumber, IsString } from 'class-validator';
+import type { Decimal } from "@prisma/client/runtime/library";
+import { IsNumber, IsString } from "class-validator";
 
 export class UserRegisterDto {
 	@IsNumber()
@@ -22,4 +22,4 @@ export class UserRegisterDto {
 
 	@IsNumber()
 	objectStatusId: number;
-};
+}

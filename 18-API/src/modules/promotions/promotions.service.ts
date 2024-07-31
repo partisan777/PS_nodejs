@@ -1,20 +1,20 @@
 
 import { inject, injectable } from 'inversify';
-import { IConfigService } from '../../config/config.service.interface';
-import { TYPES } from '../../types';
-import { Promotion } from './promotion.entity';
-import { PromotionCreateDto } from './dto/promotion-create.dto';
-import { PromotionSaveDto } from './dto/promotion-save.dto';
-import { IPromotionService } from './interfaces/promotions.service.interface';
-import { ERowStatus, EUserRoles } from '../../enum';
-import { UserRequestDataDto } from '../users/dto/user-data.dto';
-import { PromotionUpdateSatusDto } from './dto/promotion-update-status.dto';
-import { IPromotionsRepository } from './interfaces/promotions.repository.interface';
-import { generateSortParamsCondition } from '../../common/generateSortParamsCondition';
 import { generateQueryParamsCondition } from '../../common/generateQueryParamsCondition';
-import { IQueryParams } from '../../interfaces';
+import { generateSortParamsCondition } from '../../common/generateSortParamsCondition';
+import type { IConfigService } from '../../config/config.service.interface';
+import { ERowStatus, EUserRoles } from '../../enum';
+import type { IQueryParams } from '../../interfaces';
+import { TYPES } from '../../types';
+import type { IFindItemParams, ISortItemParams } from '../items/interfaces/params.interface';
+import type { UserRequestDataDto } from '../users/dto/user-data.dto';
 import { queryPromotionParamDict, sortPromotionParamDict } from './dictionares/dictionares';
-import { IFindItemParams, ISortItemParams } from '../items/interfaces/params.interface';
+import type { PromotionCreateDto } from './dto/promotion-create.dto';
+import type { PromotionSaveDto } from './dto/promotion-save.dto';
+import type { PromotionUpdateSatusDto } from './dto/promotion-update-status.dto';
+import type { IPromotionsRepository } from './interfaces/promotions.repository.interface';
+import type { IPromotionService } from './interfaces/promotions.service.interface';
+import { Promotion } from './promotion.entity';
 
 
 @injectable()

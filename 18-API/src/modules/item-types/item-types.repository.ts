@@ -1,8 +1,8 @@
-import { inject, injectable } from 'inversify';
-import { PrismaService } from '../../database/prisma.service';
-import { TYPES } from '../../types';
-import { IItemTypesRepository } from './interfaces/item-types.repository.interface';
 import { ItemTypeModel } from '@prisma/client';
+import { inject, injectable } from 'inversify';
+import type { PrismaService } from '../../database/prisma.service';
+import { TYPES } from '../../types';
+import type { IItemTypesRepository } from './interfaces/item-types.repository.interface';
 import { ItemType } from './item-type.entity';
 
 @injectable()

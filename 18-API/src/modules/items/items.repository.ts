@@ -1,13 +1,13 @@
 import { inject, injectable } from 'inversify';
-import { PrismaService } from '../../database/prisma.service';
-import { TYPES } from '../../types';
-import { Item } from './item.entity';
-import { IItemsRepository } from './interfaces/items.repository.interface';
-import { IQueryParams } from '../../interfaces';
-import { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
 import { generateQueryParamsCondition } from '../../common/generateQueryParamsCondition';
 import { generateSortParamsCondition } from '../../common/generateSortParamsCondition';
+import type { PrismaService } from '../../database/prisma.service';
+import type { IQueryParams } from '../../interfaces';
+import { TYPES } from '../../types';
 import { queryItemParamDict, sortItemParamDict } from './dictionares/dictionares'
+import type { IItemsRepository } from './interfaces/items.repository.interface';
+import type { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
+import { Item } from './item.entity';
 
 @injectable()
 export class ItemsRepository implements IItemsRepository {

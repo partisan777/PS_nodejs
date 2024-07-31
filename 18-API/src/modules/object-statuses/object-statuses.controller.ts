@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import { NextFunction, Request, Response } from 'express';
-import { injectable, inject } from 'inversify';
+import type { NextFunction, Request, Response } from 'express';
+import { inject, injectable } from 'inversify';
 import { BaseController } from '../../common/base.controller';
-import { ILogger } from '../../logger/logger.interface';
+import type { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
-import { IObjectStatusController } from './interfaces/object-statuses.controller.interface';
-import { IObjectStatusService } from './interfaces/object-statuses.service.interface';
+import type { IObjectStatusController } from './interfaces/object-statuses.controller.interface';
+import type { IObjectStatusService } from './interfaces/object-statuses.service.interface';
 
 @injectable()
 export class ObjectStatusController extends BaseController implements IObjectStatusController {

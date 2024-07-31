@@ -6,4 +6,12 @@ import { UserController } from "./users.controller";
 import { UsersRepository } from "./users.repository";
 import { UserService } from "./users.service";
 
-export { IUserController, IUsersRepository, IUserService,User, UserController, UsersRepository, UserService };
+export {
+	IUserController,
+	IUsersRepository,
+	IUserService,
+	User,
+	UserController,
+	UsersRepository,
+	UserService,
+};
