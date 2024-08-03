@@ -4,13 +4,19 @@ import type { IQueryParams } from '../../interfaces';
 import { TYPES } from '../../types';
 import type { IPromotionsRepository } from './interfaces/promotions.repository.interface';
 import { Promotion } from './promotion.entity';
-
+import { queryPromotionParamDict, sortPromotionParamDict } from './dictionares/dictionares';
+import { IFindItemParams, ISortItemParams } from '../items/interfaces/params.interface';
+import { User } from '../users';
+import { EUserRoles } from '../user-roles/enums/enums';
+import { generateQueryParamsCondition } from '../../common/generateQueryParamsCondition';
+import { generateSortParamsCondition } from '../../common/generateSortParamsCondition';
+import { PromotionCreateDto } from './dto/promotion-create.dto';
 
 @injectable()
 export class PromotionsRepository implements IPromotionsRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
-	async createPromotion(promo: Promotion) {
+	async createPromotion(promo: PromotionCreateDto) {
 		const createdPromo = await this.prismaService.client.promotionModel.create({
 			data: {
 				description: promo.description,
@@ -21,14 +27,7 @@ export class PromotionsRepository implements IPromotionsRepository {
 			},
 		});
 		if (!createdPromo) return null;
- 		return new Promotion (
-			createdPromo.id,
-			createdPromo.name,
-			createdPromo.description,
-			createdPromo.discoutnPercent,
-			createdPromo.objectStatusId,
-			createdPromo.userId
-		);
+ 		return new Promotion (createdPromo);
 	};
 
 	async updatePromotion(promo: Promotion) {
@@ -47,14 +46,7 @@ export class PromotionsRepository implements IPromotionsRepository {
 
 		if (!updatedPromotion) return null;
 
-		return new Promotion (
-			updatedPromotion.id,
-			updatedPromotion.name,
-			updatedPromotion.description,
-			updatedPromotion.discoutnPercent,
-			updatedPromotion.objectStatusId,
-			updatedPromotion.userId
-		);
+		return new Promotion (updatedPromotion);
 	};
 
 	async getPromotionById(id: number) {
@@ -66,14 +58,7 @@ export class PromotionsRepository implements IPromotionsRepository {
 
 		if (!existPromotion) return null;
 
- 		return new Promotion (
-			existPromotion.id,
-			existPromotion.name,
-			existPromotion.description,
-			existPromotion.discoutnPercent,
-			existPromotion.objectStatusId,
-			existPromotion.userId
-		);
+ 		return new Promotion (existPromotion);
 	};
 
 	async updatePromotionStatus(id: number, newStatusId: number) {
@@ -87,30 +72,23 @@ export class PromotionsRepository implements IPromotionsRepository {
 		});
 
 		if (!existPromotion) return null;
-		return new Promotion (
-		   existPromotion.id,
-		   existPromotion.name,
-		   existPromotion.description,
-		   existPromotion.discoutnPercent,
-		   existPromotion.objectStatusId,
-		   existPromotion.userId
-	   );
+		return new Promotion (existPromotion);
 	};
 
-	async getPromotions(queryParams: IQueryParams) {
-		const whereCondition = {AND: queryParams.FIND};
-		const sortCondition = queryParams.SORT;
-		const existsPromotion = await  this.prismaService.client.promotionModel.findMany({where: whereCondition, orderBy: sortCondition});
+	async getPromotions(searchParams: IFindItemParams, sortParams: ISortItemParams, userData: User) {
+		const { id,userRoleId } = userData;
+		const queryParam: IQueryParams = {FIND: [], SORT: []};
+		queryParam.FIND = generateQueryParamsCondition(searchParams, queryPromotionParamDict);
+		queryParam.SORT = generateSortParamsCondition(sortParams, sortPromotionParamDict);
+
+		if (userRoleId !== EUserRoles.ADMIN) {
+			queryParam.FIND.push({userId: id});
+		};
+
+		const existsPromotion = await this.prismaService.client.promotionModel.findMany({where: {AND: queryParam.FIND}, orderBy: queryParam.SORT});
 		if (!existsPromotion) return null;
 		return existsPromotion.map(promo => {
-			return new Promotion (
-				promo.id,
-				promo.name,
-				promo.description,
-				promo.discoutnPercent,
-				promo.objectStatusId,
-				promo.userId
-			);
+			return new Promotion (promo);
 		});
 	};
 

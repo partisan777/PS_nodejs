@@ -1,20 +1,19 @@
 
 import { inject, injectable } from 'inversify';
-import type { IConfigService } from '../../config/config.service.interface';
-import { ERowStatus, EUserRoles } from '../../enum';
+import { EUserRoles } from '../user-roles/enums/enums';
 import { TYPES } from '../../types';
-import type { UserRequestDataDto } from '../users/dto/user-data.dto';
-import type { ItemCreateDto } from './dto/item-create.dto';
-import type { ItemSaveDto } from './dto/item-save.dto';
 import type { IItemsRepository } from './interfaces/items.repository.interface';
 import type { IItemService } from './interfaces/items.service.interface';
 import type { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
-import { Item } from './item.entity';
+import { User } from '../users';
+import { ItemUpdateDto } from './dto/item-update.dto';
+import { ItemCreateDto } from './dto/item-create.dto';
+import { ItemReqCreateDto } from './dto/item-req-create.dto';
+import { EObjectStatus } from '../object-statuses/enums/enums';
 
 @injectable()
 export class ItemService implements IItemService {
 	constructor(
-		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.ItemsRepository) private itemsRepository: IItemsRepository,
 	) {}
 
@@ -22,17 +21,14 @@ export class ItemService implements IItemService {
 		return this.itemsRepository.updateItemStatus(id, newStatusId);
 	};
 
-    async createItem({ name, description, itemTypeId, price }: ItemCreateDto, userData: UserRequestDataDto) {
-	    const { userReqId  } = userData;
-		const userId = userReqId;
-		const newItem = new Item(-20, name, description, userId, itemTypeId, price, ERowStatus.NEW);
+    async createItem(item: ItemReqCreateDto, userData: User) {
+	    const {id} = userData;
+		const newItem: ItemCreateDto = {...item, userId: id, objectStatusId: EObjectStatus.NEW}
 		return this.itemsRepository.createItem(newItem);
 	};
 
-	async updateItem (data: ItemSaveDto ) {
-		const { id, name, description, userId, itemTypeId, price, objectStatusId } = data;
-		const updItem = new Item(id, name, description, userId, itemTypeId, price, objectStatusId);
-		return this.itemsRepository.updateItem(updItem);
+	async updateItem (data: ItemUpdateDto ) {
+		return this.itemsRepository.updateItem(data);
 	};
 
 	async getItemById(id: number) {
@@ -43,18 +39,18 @@ export class ItemService implements IItemService {
 		return this.itemsRepository.getItems(searchParams, sortParams);
 	};
 
-	async deleteItem(id: number, userData: UserRequestDataDto) {
-		const {user, userReqId, userRole } = userData;
+	async deleteItem(itemId: number, userData: User) {
+		const { id, userRoleId } = userData;
 
-		const existItem = await this.itemsRepository.getItemById(id);
+		const existItem = await this.itemsRepository.getItemById(itemId);
 
 		if (!existItem || existItem === null) {
-			return {code: 0, message: `товар с идентификатором ${id} не существует или его нельзя удалить`};
+			return {code: 0, message: `товар с идентификатором ${itemId} не существует или его нельзя удалить`};
 		};
 
-		if (existItem?.userId === userReqId || userRole === EUserRoles.ADMIN ) {
+		if (existItem?.userId === id || userRoleId === EUserRoles.ADMIN ) {
 			try {
-				await this.itemsRepository.deleteItem(id);
+				await this.itemsRepository.deleteItem(itemId);
 				return {code: 1, message: `товар ${existItem?.name} удален`};
 			} catch(e) {
 				return {code: 2, message: `ошибка при удалении товара ${existItem?.name}`};

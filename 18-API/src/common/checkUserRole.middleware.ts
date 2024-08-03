@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import type { EUserRoles } from "../enum";
+import type { EUserRoles } from "../modules/user-roles/enums/enums";
 import type { IMiddleware } from "./middleware.interface";
 
 export class CheckUserRole implements IMiddleware {
@@ -9,7 +9,7 @@ export class CheckUserRole implements IMiddleware {
 		res: Response,
 		next: NextFunction,
 	): Promise<void> {
-		if (this.permissions.includes(req.userReqData.userRole as EUserRoles)) {
+		if (this.permissions.includes(req.userReqData.userRoleId as EUserRoles)) {
 			return next();
 		}
 		res.status(403).send({ error: "Недостаточно прав" });

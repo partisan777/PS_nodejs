@@ -1,9 +1,6 @@
 declare namespace Express {
+	import { User } from "../src/modules/users";
 	export interface Request {
-		userReqData:  {
-			user: string;
-			userReqId: number;
-			userRole: any;
+		userReqData: User;
 		};
 	};
-};

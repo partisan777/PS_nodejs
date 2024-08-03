@@ -1,41 +1,35 @@
-import { WarehouseBalanceModel } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { ERowStatus } from '../../enum';
-import type { ILogger } from '../../logger/logger.interface';
+import { EObjectStatus } from '../object-statuses/enums/enums';
 import { TYPES } from '../../types';
-import type { UserRequestDataDto } from '../users/dto/user-data.dto';
 import type { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
 import type { IWarehouseBalancesRepository } from './interfaces/warehouse-balances.repository.interface';
 import type { IWarehouseBalancesService } from './interfaces/warehouse-balances.service.interface';
-import { WarehouseBalance } from './warehouse-balance.entity';
+import { WarehouseBalanceReqCreateDto } from './dto/warehouse-balance-req-create.dto';
+import { User } from '../users';
 
 
 @injectable()
 export class WarehouseBalancesService implements IWarehouseBalancesService {
 	constructor(
-		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.WarehouseBalancesRepository) private warehouseBalancesRepository: IWarehouseBalancesRepository,
 	) {}
 
-	async createBalance(balanceData: WarehouseBalanceCreateDto, userData: UserRequestDataDto ) {
-		const {user, userReqId, userRole } = userData;
-		const { name, description, userId, itemId, quantity } = balanceData;
+	async createBalance(balanceData: WarehouseBalanceReqCreateDto, userData: User ) {
+		const { id } = userData;
 
-		const newWarehouseBalance = new WarehouseBalance(-1, name, description, userId, itemId, quantity, ERowStatus.NEW);
+		const newWarehouseBalance: WarehouseBalanceCreateDto  = {...balanceData, userId: id, objectStatusId: EObjectStatus.NEW};
 		return this.warehouseBalancesRepository.createBalance(newWarehouseBalance);
 	};
 
-	async getBalanceById(id: number, userData: UserRequestDataDto) {
+	async getBalanceById(id: number) {
 		return this.warehouseBalancesRepository.getBalanceById(id);
 	};
 
-	async updateBalanceQuantity(id: number, quantity: number, userData: UserRequestDataDto) {
-		const {user, userReqId, userRole } = userData;
+	async updateBalanceQuantity(id: number, quantity: number, userData: User) {
 		return this.warehouseBalancesRepository.updateBalanceQuantity(id, quantity);
 	};
 
-	async updateBalanceStatus(id: number, newStatusId: number, userData: UserRequestDataDto) {
-		const {user, userReqId, userRole } = userData;
+	async updateBalanceStatus(id: number, newStatusId: number) {
 		return this.warehouseBalancesRepository.updateBalanceStatus(id, newStatusId);
 	}
 };

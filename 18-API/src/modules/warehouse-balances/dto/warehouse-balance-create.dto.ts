@@ -9,14 +9,15 @@ export class WarehouseBalanceCreateDto {
 	description: string;
 
 	@IsNumber()
-	userId: number;
-
-	@IsNumber()
 	itemId: number;
 
 	@IsNumber()
 	quantity: number | Decimal;
 
 	@IsNumber()
+	userId: number;
+
+	@IsNumber()
 	objectStatusId: number;
-}
+
+};

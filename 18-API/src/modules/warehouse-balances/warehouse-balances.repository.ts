@@ -1,37 +1,20 @@
 import { inject, injectable } from 'inversify';
 import type { PrismaService } from '../../database/prisma.service';
-import { ERowStatus } from '../../enum';
 import { TYPES } from '../../types';
-import type { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
 import type { IWarehouseBalancesRepository } from './interfaces/warehouse-balances.repository.interface';
 import { WarehouseBalance } from './warehouse-balance.entity';
-import { WarehouseBalanceModel } from '.prisma/client';
+import { WarehouseBalanceCreateDto } from './dto/warehouse-balance-create.dto';
 
 @injectable()
 export class WarehouseBalancesRepository implements IWarehouseBalancesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
-	async createBalance({ name, description, userId, itemId, quantity }: WarehouseBalanceCreateDto) {
+	async createBalance(balanceData: WarehouseBalanceCreateDto) {
 		const newBalance = await this.prismaService.client.warehouseBalanceModel.create({
-			data: {
-				name,
-				description,
-				userId,
-				itemId,
-				quantity,
-				objectStatusId: ERowStatus.NEW
-			}
+			data: balanceData
 		});
 		if (!newBalance) return null;
-		return new WarehouseBalance (
-			newBalance.id,
-			newBalance.name,
-			newBalance.description,
-			newBalance.userId,
-			newBalance.itemId,
-			newBalance.quantity,
-			newBalance.objectStatusId
-		);
+		return new WarehouseBalance (newBalance);
 	};
 
 	async getBalanceById(id: number) {
@@ -41,15 +24,7 @@ export class WarehouseBalancesRepository implements IWarehouseBalancesRepository
 			},
 		})
 		if (!existBalance) return null;
-		return new WarehouseBalance (
-			existBalance.id,
-			existBalance.name,
-			existBalance.description,
-			existBalance.userId,
-			existBalance.itemId,
-			existBalance.quantity,
-			existBalance.objectStatusId
-		);
+		return new WarehouseBalance (existBalance);
 	};
 
 	async updateBalanceQuantity(id: number, quantity: number) {
@@ -62,15 +37,7 @@ export class WarehouseBalancesRepository implements IWarehouseBalancesRepository
 			}
 		})
 		if (!existBalance) return null;
-		return new WarehouseBalance (
-			existBalance.id,
-			existBalance.name,
-			existBalance.description,
-			existBalance.userId,
-			existBalance.itemId,
-			existBalance.quantity,
-			existBalance.objectStatusId
-		);
+		return new WarehouseBalance (existBalance);
 	};
 
 	async updateBalanceStatus(id: number, newStatusNumber: number) {
@@ -83,14 +50,6 @@ export class WarehouseBalancesRepository implements IWarehouseBalancesRepository
 			}
 		})
 		if (!existBalance) return null;
-		return new WarehouseBalance (
-			existBalance.id,
-			existBalance.name,
-			existBalance.description,
-			existBalance.userId,
-			existBalance.itemId,
-			existBalance.quantity,
-			existBalance.objectStatusId
-		);
+		return new WarehouseBalance (existBalance);
 	};
 };

@@ -5,10 +5,10 @@ import { AuthGuard } from '../../common/auth.guard';
 import { BaseController } from '../../common/base.controller';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
 import { ValidateMiddleware } from '../../common/validate.middleware';
-import { EUserRoles } from '../../enum';
+import { EUserRoles } from '../user-roles/enums/enums';
 import type { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
-import { PromotionCreateDto } from './dto/promotion-create.dto';
+import { PromotionReqCreateDto } from './dto/promotion-req-create.dto';
 import { GetRequestPromotionDto } from './dto/promotion-get.dto';
 import { PromotionSaveDto } from './dto/promotion-save.dto';
 import { PromotionUpdateSatusDto } from './dto/promotion-update-status.dto';
@@ -28,7 +28,7 @@ export class PromotionController extends BaseController implements IPromotionCon
 				path: '/create-promotion',
 				method: 'post',
 				func: this.createPromotion,
-				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.SHIPPER]), new ValidateMiddleware(PromotionCreateDto)],
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.SHIPPER]), new ValidateMiddleware(PromotionReqCreateDto)],
 			},
 			{
 				path: '/get-promotion-by-id',
@@ -63,9 +63,9 @@ export class PromotionController extends BaseController implements IPromotionCon
 		]);
 	}
 
-	async createPromotion(req: Request<{}, {}, PromotionCreateDto>, res: Response, next: NextFunction)  {
-		const { name, description, discoutnPercent, objectStatusId} = req.body;
-		const promotion = await this.promotionService.createPromotion({ name, description, discoutnPercent, objectStatusId}, req.userReqData);
+	async createPromotion(req: Request<{}, {}, PromotionReqCreateDto>, res: Response, next: NextFunction)  {
+		const { name, description, discoutnPercent, itemId} = req.body;
+		const promotion = await this.promotionService.createPromotion({ name, description, discoutnPercent, itemId }, req.userReqData);
 		this.ok(res, promotion );
 	};
 

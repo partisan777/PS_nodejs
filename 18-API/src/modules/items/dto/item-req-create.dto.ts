@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from "class-validator";
 
-export class ItemCreateDto {
+export class ItemReqCreateDto {
 	@IsString({ message: "Не указано наименование товара" })
 	name: string;
 
@@ -12,10 +12,4 @@ export class ItemCreateDto {
 
 	@IsNumber()
 	itemTypeId: number;
-
-	@IsNumber()
-	userId: number;
-
-	@IsNumber()
-	objectStatusId: number;
 };

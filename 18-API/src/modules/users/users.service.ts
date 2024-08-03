@@ -1,12 +1,15 @@
 import { inject, injectable } from 'inversify';
 import type { IConfigService } from '../../config/config.service.interface';
-import { ERowStatus, EUserRoles } from '../../enum';
+import { EObjectStatus } from '../object-statuses/enums/enums';
+import { EUserRoles } from '../user-roles/enums/enums';
 import { TYPES } from '../../types';
 import type { UserLoginDto } from './dto/user-login.dto';
 import type { UserRegisterDto } from './dto/user-register.dto';
 import type { IUsersRepository } from './interfaceses/users.repository.interface';
 import type { IUserService } from './interfaceses/users.service.interface';
-import { User } from './user.entity';
+import { compare, hash } from "bcryptjs";
+import { UserCreateDto } from './dto/user-create.dto';
+import { ChangeableFields } from './user.entity';
 
 @injectable()
 export class UserService implements IUserService {
@@ -15,13 +18,13 @@ export class UserService implements IUserService {
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
 	) {}
 	async createUser({ email, login, password }: UserRegisterDto) {
-		const newUser = new User(-1, email, login, password, '', ERowStatus.NEW, EUserRoles.USER);
-		const salt = this.configService.get('SALT');
-		await newUser.setPassword(password, Number(salt));
 		const existedUser = await this.usersRepository.find(email);
 		if (existedUser) {
 			return null;
 		}
+		const salt = this.configService.get('SECRETSALT');
+		const passwordHash = await hash(password, Number(salt))
+		const newUser: UserCreateDto = { email, login, password: passwordHash, objectStatusId: EObjectStatus.NEW, userRoleId: EUserRoles.USER };
 		return this.usersRepository.create(newUser);
 	};
 
@@ -30,19 +33,14 @@ export class UserService implements IUserService {
 		if (!existedUser) {
 			return false;
 		}
-		const newUser = new User(-1, existedUser.email, existedUser.login, existedUser.password, existedUser.password, ERowStatus.NEW, EUserRoles.USER);
-		return newUser.comparePassword(password);
+		return compare(password, existedUser.password);
 	};
 
 	async getUserInfo(email: string) {
 		return this.usersRepository.find(email);
 	};
 
-	async updateUserStatus(id: number, newStatusId: number) {
-		return this.usersRepository.updateUserStatus(id, newStatusId);
-	};
-
-	async updateUserRole(id: number, newRoleNumber: number) {
-		return this.usersRepository.updateUserRole(id, newRoleNumber);
+	async updateUserFields(id: number, fields: ChangeableFields) {
+		return this.usersRepository.updateUserFields(id, fields );
 	};
 };

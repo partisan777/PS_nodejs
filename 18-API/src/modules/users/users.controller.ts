@@ -7,7 +7,7 @@ import { BaseController } from '../../common/base.controller';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
 import { ValidateMiddleware } from '../../common/validate.middleware';
 import type { IConfigService } from '../../config/config.service.interface';
-import { EUserRoles } from '../../enum';
+import { EUserRoles } from '../user-roles/enums/enums';
 import { HTTPError } from '../../errors/http-error.class';
 import type { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
@@ -16,6 +16,7 @@ import { UserRegisterDto } from './dto/user-register.dto';
 import { UserUpdateRoleDto } from './dto/user-update-role.dto';
 import type { IUserController } from './interfaceses/users.controller.interface';
 import type { IUserService } from './interfaceses/users.service.interface';
+import { UserUpdateStatusDto } from './dto/user-update-status';
 
 
 @injectable()
@@ -50,6 +51,12 @@ export class UserController extends BaseController implements IUserController {
 				method: 'post',
 				func: this.updateUserRole,
 				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN]), new ValidateMiddleware(UserUpdateRoleDto)],
+			},
+			{
+				path: '/update-user-status',
+				method: 'post',
+				func: this.updateUserStatus,
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN]), new ValidateMiddleware(UserUpdateStatusDto)],
 			},
 		]);
 	}
@@ -106,8 +113,14 @@ export class UserController extends BaseController implements IUserController {
 	};
 
 	async updateUserRole(req: Request, res: Response, next: NextFunction): Promise<void> {
-		const {id, newRoleNumber} = req.body;
-		const user = await this.userService.updateUserRole(id, newRoleNumber);
+		const {id, newRoleId} = req.body;
+		const user = await this.userService.updateUserFields(id, { userRoleId: newRoleId });
+		this.ok(res, { email: user?.email, id: user?.id, login: user?.login, userRole: user?.userRoleId });
+	};
+
+	async updateUserStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+		const {id, newStatusId} = req.body;
+		const user = await this.userService.updateUserFields(id, { objectStatusId: newStatusId });
 		this.ok(res, { email: user?.email, id: user?.id, login: user?.login, userRole: user?.userRoleId });
 	};
 };

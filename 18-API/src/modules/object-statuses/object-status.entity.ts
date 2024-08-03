@@ -1,8 +1,11 @@
+import { ObjectStatusModel } from "@prisma/client";
+
 export class ObjectStatus {
 	id: number;
 	description: string;
 
-	constructor(id: number, description: string) {
-		(this.id = id), (this.description = description);
+	constructor(objectSatus: ObjectStatusModel) {
+		this.id = objectSatus.id;
+		this.description = objectSatus.description;
 	}
 }

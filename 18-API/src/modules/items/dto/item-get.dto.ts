@@ -16,19 +16,15 @@ class FindParams {
 
 	@IsNumber({}, { each: true })
 	objectStatusId?: number[];
-}
+};
 
 class SortParams {
 	name?: "asc" | "desc";
-
 	price?: "asc" | "desc";
-
 	maxPrice?: "asc" | "desc";
-
 	itemTypeId?: "asc" | "desc";
-
 	objectStatusId?: "asc" | "desc";
-}
+};
 
 class GetItemParams {
 	@ValidateNested({ each: true })
@@ -38,7 +34,7 @@ class GetItemParams {
 	@ValidateNested({ each: true })
 	@Type(() => SortParams)
 	sortParams: SortParams;
-}
+};
 
 export class GetRequestItemDto {
 	@ValidateNested({ each: true })
@@ -48,10 +44,10 @@ export class GetRequestItemDto {
 	@ValidateNested({ each: true })
 	@Type(() => SortParams)
 	SORT?: SortParams;
-}
+};
 
 export class GetItemDto {
 	@ValidateNested({ each: true })
 	@Type(() => GetItemParams)
 	getParams: GetItemParams;
-}
+};

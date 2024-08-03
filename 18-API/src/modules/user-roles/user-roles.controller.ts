@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import { AuthGuard } from '../../common/auth.guard';
 import { BaseController } from '../../common/base.controller';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
-import { EUserRoles } from '../../enum';
+import { EUserRoles } from './enums/enums';
 import type { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
 import type { IUserRolesController } from './interfaces/user-roles.controller.interface';

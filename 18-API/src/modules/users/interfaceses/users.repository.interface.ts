@@ -1,8 +1,9 @@
-import type { User } from "../user.entity";
+import { UserCreateDto } from "../dto/user-create.dto";
+import type { ChangeableFields, User } from "../user.entity";
+
 
 export interface IUsersRepository {
-	create: (user: User) => Promise<User | null>;
+	create: (newUser: UserCreateDto) => Promise<User | null>;
 	find: (email: string) => Promise<User | null>;
-	updateUserStatus: (id: number, newStatusId: number) => Promise<User | null>;
-	updateUserRole: (id: number, newRoleId: number) => Promise<User | null>;
-}
+	updateUserFields: (id: number, fields: ChangeableFields) => Promise<User | null>;
+};

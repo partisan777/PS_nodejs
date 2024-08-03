@@ -8,12 +8,14 @@ import { queryItemParamDict, sortItemParamDict } from './dictionares/dictionares
 import type { IItemsRepository } from './interfaces/items.repository.interface';
 import type { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
 import { Item } from './item.entity';
+import { ItemCreateDto } from './dto/item-create.dto';
+
 
 @injectable()
 export class ItemsRepository implements IItemsRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
-	async createItem(item: Item) {
+	async createItem(item: ItemCreateDto) {
 		const createdItem = await this.prismaService.client.itemModel.create({
 			data: {
 				description: item.description,
@@ -27,15 +29,7 @@ export class ItemsRepository implements IItemsRepository {
 
 		if(!createdItem) return null;
 
-		return new Item (
-			createdItem.id,
-			createdItem.name,
-			createdItem.description,
-			createdItem.userId,
-			createdItem.itemTypeId,
-			createdItem.price,
-			createdItem.objectStatusId
-		);
+		return new Item (createdItem);
 	};
 
 	async updateItem(item: Item) {
@@ -53,37 +47,35 @@ export class ItemsRepository implements IItemsRepository {
 		});
 		if(!updatedItem) return null;
 
-		return new Item (
-			updatedItem.id,
-			updatedItem.name,
-			updatedItem.description,
-			updatedItem.userId,
-			updatedItem.itemTypeId,
-			updatedItem.price,
-			updatedItem.objectStatusId
-		);
+		return new Item(updatedItem);
 	};
 
-	async getItemById(id: number) {
-		return this.prismaService.client.itemModel.findFirst({
+	async getItemById(itemId: number) {
+		const existItem = await this.prismaService.client.itemModel.findFirst({
 			include: {
 				itemBalance: true,
 			},
 			where: {
-				id: id
+				id: itemId
 			},
 		});
+		if(!existItem) return null;
+
+		return new Item(existItem);
 	};
 
-	async updateItemStatus(id: number, newStatusId: number) {
-		return this.prismaService.client.itemModel.update({
+	async updateItemStatus(itemId: number, newStatusId: number) {
+		const existItem = await this.prismaService.client.itemModel.update({
 			where: {
-				id: id
+				id: itemId
 			},
 			data: {
 				objectStatusId: newStatusId,
 			},
 		});
+
+		if(!existItem) return null;
+		return new Item(existItem);
 	};
 
 	async getItems(searchParams: IFindItemParams, sortParams: ISortItemParams) {
@@ -93,13 +85,16 @@ export class ItemsRepository implements IItemsRepository {
 		queryParam.FIND.push({itemBalance:{quantity: {gt: 0}}});
 		const whereCondition = {AND: queryParam.FIND};
 		const sortCondition = queryParam.SORT;
-		return this.prismaService.client.itemModel.findMany({
+		const existsItems = await this.prismaService.client.itemModel.findMany({
 			include: {
 				itemBalance: true,
 			},
 			where: whereCondition, orderBy: sortCondition
 		});
+		if(!existsItems) return null;
+		return  existsItems.map(item => new Item(item));
 	};
+
 
 	async deleteItem(id: number) {
 		return this.prismaService.client.itemModel.delete({where: {id: id}});

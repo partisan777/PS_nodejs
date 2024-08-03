@@ -21,11 +21,7 @@ export class AuthMiddleware implements IMiddleware {
 						if (!authUser) {
 							next();
 						} else {
-							req.userReqData = {
-								user: authUser.email,
-								userRole: authUser.userRoleId,
-								userReqId: authUser.id,
-							};
+							req.userReqData = authUser;
 							next();
 						}
 					}

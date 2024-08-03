@@ -32,12 +32,12 @@ export class ObjectStatusController extends BaseController implements IObjectSta
 
 	async getObjectStatusById(req: Request, res: Response, next: NextFunction) {
 		const objectStatusId  = req.body.objectStatusId;
-		const rowStatus = await this.objectStatusService.getObjectStatusById( objectStatusId );
-		this.ok( res, rowStatus );
+		const objectStatus = await this.objectStatusService.getObjectStatusById( objectStatusId );
+		this.ok( res, objectStatus );
 	};
 
 	async getObjectStatuses(req: Request, res: Response, next: NextFunction) {
-		const rowStatuses = await this.objectStatusService.getObjectStatuses();
-		this.ok( res, rowStatuses );
+		const objectStatus = await this.objectStatusService.getObjectStatuses();
+		this.ok( res, objectStatus );
 	};
 };

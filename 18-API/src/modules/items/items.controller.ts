@@ -6,15 +6,16 @@ import { BaseController } from '../../common/base.controller';
 import { CheckUserRole } from '../../common/checkUserRole.middleware';
 import { ValidateMiddleware } from '../../common/validate.middleware';
 import type { IConfigService } from '../../config/config.service.interface';
-import { EUserRoles } from '../../enum';
+import { EUserRoles } from '../user-roles/enums/enums';
 import type { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
-import { ItemCreateDto } from './dto/item-create.dto';
+import { ItemReqCreateDto } from './dto/item-req-create.dto';
 import { GetItemDto } from './dto/item-get.dto';
 import { ItemUpdateSatusDto } from './dto/item-update-status.dto';
 import type { IItemController } from './interfaces/items.controller.interface';
 import type { IItemService } from './interfaces/items.service.interface';
 import type { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
+import { ItemCreateDto } from './dto/item-create.dto';
 
 @injectable()
 export class ItemController extends BaseController implements IItemController {
@@ -29,7 +30,7 @@ export class ItemController extends BaseController implements IItemController {
 				path: '/create-item',
 				method: 'post',
 				func: this.createItem,
-				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.SHIPPER]), new ValidateMiddleware(ItemCreateDto)],
+				middlewares: [new AuthGuard(), new CheckUserRole([EUserRoles.ADMIN, EUserRoles.SHIPPER]), new ValidateMiddleware(ItemReqCreateDto)],
 			},
 			{
 				path: '/get-item-by-id',
@@ -65,8 +66,8 @@ export class ItemController extends BaseController implements IItemController {
 	}
 
 	async createItem(req: Request, res: Response, next: NextFunction)  {
-		const { name, description, itemTypeId, price } = req.body;
-		const item = await this.itemService.createItem({name, description, itemTypeId, price}, req.userReqData);
+		const createItem: ItemReqCreateDto = req.body;
+		const item = await this.itemService.createItem(createItem, req.userReqData);
 		this.ok(res, item );
 	};
 

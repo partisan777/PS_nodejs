@@ -1,5 +1,5 @@
-import type { UserRequestDataDto } from "../../users/dto/user-data.dto";
-import type { PromotionCreateDto } from "../dto/promotion-create.dto";
+import type { User } from "../../users";
+import type { PromotionReqCreateDto } from "../dto/promotion-req-create.dto";
 import type { PromotionSaveDto } from "../dto/promotion-save.dto";
 import type { PromotionUpdateSatusDto } from "../dto/promotion-update-status.dto";
 import type { Promotion } from "../promotion.entity";
@@ -10,22 +10,22 @@ import type {
 
 export interface IPromotionService {
 	createPromotion: (
-		promoDto: PromotionCreateDto,
-		userData: UserRequestDataDto,
+		promoDto: PromotionReqCreateDto,
+		userData: User,
 	) => Promise<Promotion | null>;
 	getPromotionById: (
-		id: number,
-		userData: UserRequestDataDto,
+		promoId: number,
+		userData: User,
 	) => Promise<Promotion | null>;
 	updatePromotion: (dto: PromotionSaveDto) => Promise<any>;
 	updatePromotionStatus: (
 		updateData: PromotionUpdateSatusDto,
-		userData: UserRequestDataDto,
+		userData: User,
 	) => Promise<Promotion | null>;
 	getPromotions: (
 		searchParams: IFindPromotionParams,
 		sortParams: ISortPromotionParams,
-		userData: UserRequestDataDto,
+		userData: User,
 	) => Promise<Promotion[] | null>;
 	deletePromotion: (id: number) => Promise<Record<string, string | number>>;
 }

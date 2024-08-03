@@ -1,48 +1,43 @@
 
 import { inject, injectable } from 'inversify';
-import { generateQueryParamsCondition } from '../../common/generateQueryParamsCondition';
-import { generateSortParamsCondition } from '../../common/generateSortParamsCondition';
-import type { IConfigService } from '../../config/config.service.interface';
-import { ERowStatus, EUserRoles } from '../../enum';
-import type { IQueryParams } from '../../interfaces';
+import { EObjectStatus } from '../object-statuses/enums/enums';
+import { EUserRoles } from '../user-roles/enums/enums';
 import { TYPES } from '../../types';
 import type { IFindItemParams, ISortItemParams } from '../items/interfaces/params.interface';
-import type { UserRequestDataDto } from '../users/dto/user-data.dto';
-import { queryPromotionParamDict, sortPromotionParamDict } from './dictionares/dictionares';
-import type { PromotionCreateDto } from './dto/promotion-create.dto';
 import type { PromotionSaveDto } from './dto/promotion-save.dto';
 import type { PromotionUpdateSatusDto } from './dto/promotion-update-status.dto';
 import type { IPromotionsRepository } from './interfaces/promotions.repository.interface';
 import type { IPromotionService } from './interfaces/promotions.service.interface';
-import { Promotion } from './promotion.entity';
+import type { Promotion } from './promotion.entity';
+import { User } from '../users';
+import { PromotionReqCreateDto } from './dto/promotion-req-create.dto';
+import { PromotionCreateDto } from './dto/promotion-create.dto';
 
 
 @injectable()
 export class PromotionService implements IPromotionService {
 	constructor(
-		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.PromotionsRepository) private promotionsRepository: IPromotionsRepository,
 	) {}
 
-	async updatePromotionStatus(updateData: PromotionUpdateSatusDto, UserRequestData: UserRequestDataDto) {
+	async updatePromotionStatus(updateData: PromotionUpdateSatusDto) {
 		const {id, newStatusNumber} = updateData;
 		return this.promotionsRepository.updatePromotionStatus(id, newStatusNumber);
 	};
 
-    async createPromotion(createPromotionData: PromotionCreateDto, userData: UserRequestDataDto ) {
-		const { name, description, discoutnPercent, objectStatusId } = createPromotionData;
-		const { user, userReqId, userRole } = userData;
-		const newPromotion = new Promotion(-20, name, description, discoutnPercent, ERowStatus.NEW, userReqId );
+    async createPromotion(createPromotionData: PromotionReqCreateDto, userData: User ) {
+		const { id } = userData;
+		const newPromotion: PromotionCreateDto = {...createPromotionData, objectStatusId: EObjectStatus.NEW, userId: id };
 	 	return this.promotionsRepository.createPromotion(newPromotion);
 	};
 
-	async getPromotionById(id: number, userData: UserRequestDataDto ) {
-		const { user, userReqId, userRole } = userData;
+	async getPromotionById(promoId: number, userData: User ) {
+		const { id, userRoleId } = userData;
 
-		const existPromotion = await this.promotionsRepository.getPromotionById(id);
+		const existPromotion = await this.promotionsRepository.getPromotionById(promoId);
 
-		if (existPromotion?.userId === userReqId || userRole === EUserRoles.ADMIN) {
-			return this.promotionsRepository.getPromotionById(id);
+		if (existPromotion?.userId === id || userRoleId === EUserRoles.ADMIN) {
+			return this.promotionsRepository.getPromotionById(promoId);
 		} else {
 			return null;
 		};
@@ -56,24 +51,13 @@ export class PromotionService implements IPromotionService {
 		if (!existPromotion) {
 			return null;
 		};
-
-		const updItem = new Promotion(id, name, description, discoutnPercent, objectStatusId, userId);
+		const updItem: Promotion = {id, name, description, discoutnPercent, objectStatusId, userId};
 		return this.promotionsRepository.updatePromotion(updItem);
 	};
 
 
-	async getPromotions(searchParams: IFindItemParams, sortParams: ISortItemParams, userData: UserRequestDataDto) {
-		const { user, userReqId, userRole } = userData;
-		const queryParam: IQueryParams = {FIND: [], SORT: []};
-
-		queryParam.FIND = generateQueryParamsCondition(searchParams, queryPromotionParamDict);
-		queryParam.SORT = generateSortParamsCondition(sortParams, sortPromotionParamDict);
-
-
-		if (userRole !== EUserRoles.ADMIN) {
-			queryParam.FIND.push({userId: userReqId});
-		};
-		return this.promotionsRepository.getPromotions(queryParam);
+	async getPromotions(searchParams: IFindItemParams, sortParams: ISortItemParams, userData: User) {
+		return this.promotionsRepository.getPromotions(searchParams, sortParams, userData);
 	};
 
 

@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8000/
     description: Локальный сервер
 paths:
-  /promotions/createpromotion:
+  /promotions/create-promotion:
     post:
       summary: создать промоакцию
       requestBody:
@@ -26,7 +26,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Promotion'
-  /promotions/updatepromotionstatus:
+  /promotions/update-promotion-status:
     post:
       summary: обновить статус промо-акции
       requestBody:
@@ -45,7 +45,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Promotion'
-  /promotions/savepromotion:
+  /promotions/update-promotion:
     post:
       summary: обновить промо-акцию
       requestBody:
@@ -64,7 +64,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Promotion'
-  /promotions/deletepromotion:
+  /promotions/delete-promotion:
     delete:
       summary: удалить промоакцию по ID
       requestBody:
@@ -83,7 +83,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/DeletePromotionResponse'
-  /promotions/getpromotionbyid:
+  /promotions/get-promotion-by-id:
     get:
       summary: получить промоакцию по id
       requestBody:
@@ -119,7 +119,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Promotion'
-  /Items/createItem:
+  /Items/create-item:
     post:
       summary: создать товар
       requestBody:
@@ -138,7 +138,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Item'
-  /Items/updateItemstatus:
+  /Items/update-item-status:
     post:
       summary: обновить статус товара
       requestBody:
@@ -157,7 +157,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Item'
-  /Items/saveItem:
+  /Items/update-item:
     post:
       summary: обновить товар
       requestBody:
@@ -195,7 +195,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/DeleteItemResponse'
-  /Items/getItembyid:
+  /Items/get-item-by-id:
     get:
       summary: получить товар по id
       requestBody:
@@ -254,15 +254,7 @@ components:
           description: цифровой номер статуса записи
         userId":
           type: number
-          description: идентификатор пользователя
-        createdAt:
-          type: string
-          format: date-time
-          description: дата создания акции
-        updatedAt:
-          type: string
-          format: date-time
-          description: дата создания акции
+          description: идентификатор пользователя       
     UpdatePromotionStatus:
       properties:
         id:
@@ -333,14 +325,6 @@ components:
         userId":
           type: number
           description: идентификатор пользователя
-        createdAt:
-          type: string
-          format: date-time
-          description: дата создания акции
-        updatedAt:
-          type: string
-          format: date-time
-          description: дата создания акции
     DeletePromotionResponse:
       type: object
       properties:
@@ -384,14 +368,6 @@ components:
         itemTypeId:
           type: number
           description: цифровой номер типа товара
-        createdAt:
-          type: string
-          format: date-time
-          description: дата создания товара
-        UpdatedAt:
-          type: string
-          format: date-time
-          description: дата создания товара
         ItemBalance":
           type: object
           description: складские остатки
@@ -417,14 +393,6 @@ components:
             quantity:
               type: number
               description: остаток товара
-            createdAt:
-              type: string
-              format: date-time
-              description: дата создания записи
-            UpdatedAt:
-              type: string
-              format: date-time
-              description: дата создания записи
     UpdateItemStatus:
       properties:
         id:

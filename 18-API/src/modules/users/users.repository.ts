@@ -2,18 +2,18 @@ import { inject, injectable } from 'inversify';
 import type { PrismaService } from '../../database/prisma.service';
 import { TYPES } from '../../types';
 import type { IUsersRepository } from './interfaceses/users.repository.interface';
-import { User } from './user.entity';
-
+import { ChangeableFields, User } from './user.entity';
+import { UserCreateDto } from './dto/user-create.dto';
 
 @injectable()
 export class UsersRepository implements IUsersRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
-	async create(newUser: User) {
+	async create(newUser: UserCreateDto) {
 		const createdUser = await this.prismaService.client.userModel.create({
 			data: {
 				email: newUser.email,
-				password: newUser._password,
+				password: newUser.password,
 				login: newUser.login,
 				objectStatusId:  newUser.objectStatusId,
 				userRoleId: newUser.userRoleId
@@ -21,16 +21,7 @@ export class UsersRepository implements IUsersRepository {
 		});
 
 		if (!createdUser) return null;
-
-		return new User(
-			createdUser.id,
-			createdUser.email,
-			createdUser.login,
-			createdUser.password,
-			createdUser.password,
-			createdUser.objectStatusId,
-			createdUser.userRoleId
-		);
+		return new User(createdUser);
 	};
 
 	async find(email: string) {
@@ -42,57 +33,17 @@ export class UsersRepository implements IUsersRepository {
 
 		if (!existUser) return null;
 
-		return new User(
-			existUser.id,
-			existUser.email,
-			existUser.login,
-			existUser.password,
-			existUser.password,
-			existUser.objectStatusId,
-			existUser.userRoleId
-		);
+		return new User(existUser);
 	};
 
-	async updateUserStatus(id: number, newStatusId: number) {
+	async updateUserFields(id: number, fields: ChangeableFields) {
 		const existUser =  await this.prismaService.client.userModel.update({
-			data: {
-				objectStatusId: newStatusId
-			},
+			data: fields,
 			where: {
 				id: id
 			}
 		});
-
 		if (!existUser) return null;
-
-		return new User(
-			existUser.id,
-			existUser.email,
-			existUser.login,
-			existUser.password,
-			existUser.password,
-			existUser.objectStatusId,
-			existUser.userRoleId
-		);
-	};
-
-	async updateUserRole(id: number, newRoleNumber: number): Promise<User> {
-		const existUser =  await  this.prismaService.client.userModel.update({
-			data: {
-				userRoleId: newRoleNumber
-			},
-			where: {
-				id: id
-			}
-		});
-		return new User(
-			existUser.id,
-			existUser.email,
-			existUser.login,
-			existUser.password,
-			existUser.password,
-			existUser.objectStatusId,
-			existUser.userRoleId
-		);
+		return new User(existUser);
 	};
 };

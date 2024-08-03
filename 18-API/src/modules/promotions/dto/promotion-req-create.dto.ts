@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from "class-validator";
 
-export class PromotionCreateDto {
+export class PromotionReqCreateDto {
 	@IsString({ message: "Не указано наименование акции" })
 	name: string;
 
@@ -12,10 +12,4 @@ export class PromotionCreateDto {
 
 	@IsNumber()
 	itemId: number;
-
-	@IsNumber()
-	userId: number;
-
-	@IsNumber()
-	objectStatusId: number;
 };

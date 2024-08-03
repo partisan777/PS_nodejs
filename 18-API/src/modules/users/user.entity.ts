@@ -1,34 +1,22 @@
-import { compare, hash } from "bcryptjs";
+import { UserModel } from "@prisma/client";
 
 export class User {
-	id: number;
-	email: string;
-	login: string;
-	password: string;
-	_password: string;
-	userRoleId: number;
-	objectStatusId: number;
+		id: number;
+		email: string;
+		login: string;
+		password: string;
+		userRoleId: number;
+		objectStatusId: number;
 	constructor(
-		id: number,
-		email: string,
-		login: string,
-		password: string,
-		passwordHash: string,
-		objectStatusId: number,
-		userRoleId: number,
+		userModel: UserModel
 	) {
-		(this.id = id),
-			(this.email = email),
-			(this.login = login),
-			(this.password = password),
-			(this.userRoleId = userRoleId),
-			(this.objectStatusId = objectStatusId);
+		this.id = userModel.id;
+		this.email = userModel.email;
+		this.login = userModel.login;
+		this.password = userModel.password;
+		this.userRoleId = userModel.userRoleId;
+		this.objectStatusId = userModel.objectStatusId;
 	}
-	public async setPassword(pass: string, salt: number): Promise<void> {
-		this._password = await hash(pass, salt);
-	}
+};
 
-	public async comparePassword(pass: string): Promise<boolean> {
-		return compare(pass, this._password);
-	}
-}
+export type ChangeableFields = Partial<Pick<User, "userRoleId" | "objectStatusId">>;

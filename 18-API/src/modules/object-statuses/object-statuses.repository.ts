@@ -15,22 +15,13 @@ export class ObjectStatusRepository implements IObjectStatusRepository {
 			},
 		});
 		if (!existObjectStatus) return null;
-
-		return new ObjectStatus(
-			existObjectStatus.id,
-			existObjectStatus.description
-		);
+		return new ObjectStatus(existObjectStatus);
 	};
 
 	async getObjectStatuses() {
 		const existObjectStatuses = await this.prismaService.client.objectStatusModel.findMany();
 		if (!existObjectStatuses) return null;
 
-		return existObjectStatuses.map( item => {
-			return new ObjectStatus(
-				item.id,
-				item.description
-			);
-		})
+		return existObjectStatuses.map( item => new ObjectStatus(item) );
 	};
 };
