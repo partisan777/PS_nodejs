@@ -19,4 +19,4 @@ export class Item {
 		this.price = item.price;
 		this.objectStatusId = item.objectStatusId;
 	}
-}
+};

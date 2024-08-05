@@ -13,7 +13,9 @@ import { ItemCreateDto } from './dto/item-create.dto';
 
 @injectable()
 export class ItemsRepository implements IItemsRepository {
-	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
+	constructor(
+		@inject(TYPES.PrismaService) private prismaService: PrismaService
+	) {}
 
 	async createItem(item: ItemCreateDto) {
 		const createdItem = await this.prismaService.client.itemModel.create({

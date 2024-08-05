@@ -6,6 +6,7 @@ import type { IWarehouseBalancesRepository } from './interfaces/warehouse-balanc
 import type { IWarehouseBalancesService } from './interfaces/warehouse-balances.service.interface';
 import { WarehouseBalanceReqCreateDto } from './dto/warehouse-balance-req-create.dto';
 import { User } from '../users';
+import { EUserRoles } from '../user-roles/enums/enums';
 
 
 @injectable()
@@ -25,11 +26,17 @@ export class WarehouseBalancesService implements IWarehouseBalancesService {
 		return this.warehouseBalancesRepository.getBalanceById(id);
 	};
 
-	async updateBalanceQuantity(id: number, quantity: number, userData: User) {
-		return this.warehouseBalancesRepository.updateBalanceQuantity(id, quantity);
+	async updateBalanceQuantity(balanceId: number, quantity: number, userData: User) {
+		const { id, userRoleId } = userData;
+		const existBalance = await this.warehouseBalancesRepository.getBalanceById(balanceId);
+		if (!existBalance) return null;
+		if (existBalance.userId === id || userRoleId === EUserRoles.ADMIN) {
+			return this.warehouseBalancesRepository.updateBalanceQuantity(balanceId, quantity);
+		}
+		return null;
 	};
 
 	async updateBalanceStatus(id: number, newStatusId: number) {
 		return this.warehouseBalancesRepository.updateBalanceStatus(id, newStatusId);
-	}
+	};
 };

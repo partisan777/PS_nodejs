@@ -1,32 +1,6 @@
 import { Type } from "class-transformer";
 import { IsNumber, IsString, ValidateNested } from "class-validator";
 
-/*
-export class GetPromotionDto {
-    FIND?: {
-        name?: string;
-	    objectStatusId?: number[];
-    };
-    SORT?: {
-        name?: string;
-	    objectStatusId?: number;
-    }
-};
-
-export class GetRequestPromotionDto {
-    getParams: {
-		searchParams: {
-            name?: string;
-	        objectStatusId?: number[];
-        },
-        sortParams: {
-            name?: string;
-            objectStatusId: string;
-        }
-    }
-};
-*/
-
 class FindParams {
 	@IsString()
 	name?: string;

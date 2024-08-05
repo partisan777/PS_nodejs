@@ -12,11 +12,13 @@ import type { Promotion } from './promotion.entity';
 import { User } from '../users';
 import { PromotionReqCreateDto } from './dto/promotion-req-create.dto';
 import { PromotionCreateDto } from './dto/promotion-create.dto';
+import { ILogger } from '../../logger/logger.interface';
 
 
 @injectable()
 export class PromotionService implements IPromotionService {
 	constructor(
+		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.PromotionsRepository) private promotionsRepository: IPromotionsRepository,
 	) {}
 
@@ -71,7 +73,10 @@ export class PromotionService implements IPromotionService {
 			await this.promotionsRepository.deletePromotion(id);
 			return {code: 1, message: `промоакция ${existPromotion.name} удалена`};
 		} catch(e) {
-			return {code: 2, message: `ошибка при удалении промоакции ${existPromotion.name}`};
+			this.loggerService.error(e);
+			let errorMessage: string = '';
+			if (e instanceof Error) errorMessage = e?.message;
+			return {code: 2, message: `ошибка при удалении промоакции ${existPromotion.name}: ${errorMessage}`};
 		};
 	};
 };

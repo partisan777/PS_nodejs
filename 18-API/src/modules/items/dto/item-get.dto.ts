@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsNumber, IsString, ValidateNested } from "class-validator";
 
 class FindParams {
 	@IsString()
@@ -34,16 +34,6 @@ class GetItemParams {
 	@ValidateNested({ each: true })
 	@Type(() => SortParams)
 	sortParams: SortParams;
-};
-
-export class GetRequestItemDto {
-	@ValidateNested({ each: true })
-	@Type(() => FindParams)
-	FIND?: FindParams;
-
-	@ValidateNested({ each: true })
-	@Type(() => SortParams)
-	SORT?: SortParams;
 };
 
 export class GetItemDto {

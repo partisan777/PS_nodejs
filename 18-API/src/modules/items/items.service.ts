@@ -10,10 +10,13 @@ import { ItemUpdateDto } from './dto/item-update.dto';
 import { ItemCreateDto } from './dto/item-create.dto';
 import { ItemReqCreateDto } from './dto/item-req-create.dto';
 import { EObjectStatus } from '../object-statuses/enums/enums';
+import { ILogger } from '../../logger/logger.interface';
+
 
 @injectable()
 export class ItemService implements IItemService {
 	constructor(
+		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.ItemsRepository) private itemsRepository: IItemsRepository,
 	) {}
 
@@ -53,7 +56,10 @@ export class ItemService implements IItemService {
 				await this.itemsRepository.deleteItem(itemId);
 				return {code: 1, message: `товар ${existItem?.name} удален`};
 			} catch(e) {
-				return {code: 2, message: `ошибка при удалении товара ${existItem?.name}`};
+				this.loggerService.error(e)
+				let errorMessage: string = '';
+				if (e instanceof Error) errorMessage = e?.message;
+				return {code: 2, message: `ошибка при удалении товара ${existItem?.name}: ${errorMessage}`};
 			}
 		} else {
 			return {code: 2, message: `у Вас недостаточно прав для удаления товара ${existItem?.name}`};

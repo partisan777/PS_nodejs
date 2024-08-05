@@ -79,7 +79,7 @@ export class ItemController extends BaseController implements IItemController {
 
 	async updateItem(req: Request, res: Response, next: NextFunction) {
 		const { id, name, description, userId, price, itemTypeId, objectStatusId } = req.body;
-		const item = await this.itemService.updateItem( {id, name, description, userId, price, itemTypeId, objectStatusId});
+		const item = await this.itemService.updateItem( {id, name, description, userId, price, itemTypeId, objectStatusId} );
 		this.ok( res, item );
 	};
 

@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import type { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
 import { BaseController } from '../../common/base.controller';
-import type { IConfigService } from '../../config/config.service.interface';
 import type { ILogger } from '../../logger/logger.interface';
 import { TYPES } from '../../types';
 import type { IItemTypesController } from './interfaces/item-types.controller.interface';
@@ -13,7 +12,6 @@ export class ItemTypesController extends BaseController implements IItemTypesCon
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.ItemTypesService) private itemTypesService: IItemTypesService,
-		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		super(loggerService);
 		this.bindRoutes([

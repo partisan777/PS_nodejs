@@ -1,4 +1,3 @@
-import { ItemTypeModel } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import type { PrismaService } from '../../database/prisma.service';
 import { TYPES } from '../../types';
@@ -17,16 +16,12 @@ export class ItemTypesRepository implements IItemTypesRepository {
 		});
 		if (!obj) return null;
 
-		return new ItemType(obj.id,  obj.description , obj.objectStatusId);
+		return new ItemType(obj);
 	};
 
 	async getItemTypes() {
 		const itemTypes = await this.prismaService.client.itemTypeModel.findMany();
-
 		if (!itemTypes) return null;
-
-		return itemTypes.map(obj => {
-			return new ItemType(obj.id,  obj.description , obj.objectStatusId)
-		});
+		return itemTypes.map(obj => new ItemType(obj));
 	};
 };
