@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserModel {
+  id                Int @id @default(autoincrement())
+  login             String
+  email             String
+  password          String
+  objectStatus      ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
+  objectStatusId    Int @map("object_status_id")
+  userRole          UserRoleModel  @relation(fields: [userRoleId], references: [id])
+  userRoleId        Int @map("user_role_id")
+  promotion         PromotionModel[]
+  item              ItemModel[]
+  warehouseBalances WarehouseBalanceModel[]
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @default(now()) @map("updated_at")
+}
+
+model UserRoleModel {
+  id          Int @id @default(autoincrement())
+  description String
+  user        UserModel[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
+}
+
+model ObjectStatusModel {
+  id                Int @id @default(autoincrement())
+  description       String
+  user              UserModel[]
+  item              ItemModel[]
+  promotion         PromotionModel[]
+  itemType          ItemTypeModel[]
+  warehouseBalance  WarehouseBalanceModel[]
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @default(now()) @map("updated_at")
+}
+
+model ItemModel {
+  id              Int @id @default(autoincrement())
+  name            String
+  description     String
+  price           Decimal
+  user            UserModel @relation(fields: [userId], references: [id])
+  userId          Int @map("user_id")
+  itemType        ItemTypeModel @relation(fields: [itemTypeId], references: [id])
+  itemTypeId      Int @map("item_type_id")
+  objectStatus    ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
+  objectStatusId  Int @map("object_status_id")
+  itemBalance     WarehouseBalanceModel?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
+}
+
+model ItemTypeModel {
+  id              Int @id @default(autoincrement())
+  description     String
+  item            ItemModel[]
+  objectStatus    ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
+  objectStatusId  Int @map("object_status_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
+}
+
+model PromotionModel {
+  id              Int @id @default(autoincrement())
+  name            String
+  description     String
+  discoutnPercent Decimal @map("discoutn_percent")
+  objectStatus    ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
+  objectStatusId  Int @map("object_status_id")
+  user            UserModel @relation(fields: [userId], references: [id])
+  userId          Int @map("user_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
+}
+
+model WarehouseBalanceModel {
+  id              Int @id @default(autoincrement())
+  name            String
+  description     String
+  item            ItemModel @relation(fields: [itemId], references: [id])
+  itemId          Int @unique @map("item_id")
+  objectStatus    ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
+  objectStatusId  Int @map("object_status_id")
+  user            UserModel @relation(fields: [userId], references: [id])
+  userId          Int @map("user_id")
+  quantity        Decimal
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @map("updated_at")
+}

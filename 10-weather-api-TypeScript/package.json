@@ -1,0 +1,40 @@
+{
+	"name": "weather-cli-demo",
+	"version": "1.0.0",
+	"description": "CLI for getting weather",
+	"main": "weather",
+	"bin": {
+		"weather": "./dist/index.js"
+	},
+	"scripts": {
+		"start": "node ./dist/index.js",
+		"build_dev": "tsc --watch",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"cli",
+		"weather"
+	],
+	"author": "Anton Larichev",
+	"license": "ISC",
+	"homepage": "https://purpleschool.ru",
+	"repository": {
+		"type": "git",
+		"url": "https://purpleschool.ru"
+	},
+	"bugs": {
+		"url": "https://purpleschool.ru",
+		"email": "antonlarichev@gmail.com"
+	},
+	"dependencies": {
+		
+		"axios": "^0.21.4",
+		"body-parser": "^1.20.2",
+		"dedent-js": "^1.0.1",
+		"express": "^4.19.2"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.21",
+		"typescript": "^5.4.5"
+	}
+}
