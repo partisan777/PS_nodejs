@@ -10,6 +10,8 @@ import type { IUserService } from './interfaceses/users.service.interface';
 import { compare, hash } from "bcryptjs";
 import { UserCreateDto } from './dto/user-create.dto';
 import { ChangeableFields } from './user.entity';
+import { UserCreateTelegramDto } from './dto/user-create-from-telegram.dto';
+import { FindUserWhereConditionDto } from './dto/user-where.dto';
 
 @injectable()
 export class UserService implements IUserService {
@@ -18,7 +20,8 @@ export class UserService implements IUserService {
 		@inject(TYPES.UsersRepository) private usersRepository: IUsersRepository,
 	) {}
 	async createUser({ email, login, password }: UserRegisterDto) {
-		const existedUser = await this.usersRepository.find(email);
+		const where = {email: email};
+		const existedUser = await this.usersRepository.find(where);
 		if (existedUser) {
 			return null;
 		}
@@ -29,18 +32,32 @@ export class UserService implements IUserService {
 	};
 
 	async validateUser({ email, password }: UserLoginDto) {
-		const existedUser = await this.usersRepository.find(email);
+		const where = {email: email};
+		const existedUser = await this.usersRepository.find(where);
 		if (!existedUser) {
 			return false;
 		}
 		return compare(password, existedUser.password);
 	};
 
-	async getUserInfo(email: string) {
-		return this.usersRepository.find(email);
+	async getUserInfo(where: FindUserWhereConditionDto) {
+		return this.usersRepository.find(where);
 	};
 
 	async updateUserFields(id: number, fields: ChangeableFields) {
 		return this.usersRepository.updateUserFields(id, fields );
+	};
+
+	async createUserFromTelegram(id: number, name: string) {
+		const where = {telegramUserId: id};
+		const getUserInfo = await this.getUserInfo(where);
+		if (getUserInfo) return null;
+		const newUser: UserCreateTelegramDto = {
+			telegramUserName: name,
+			telegramUserId:  id,
+			objectStatusId: EObjectStatus.NEW,
+			userRoleId: EUserRoles.USER
+		}
+		return this.usersRepository.createUserFromTelegram(newUser);
 	};
 };

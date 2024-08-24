@@ -4,6 +4,8 @@ import { TYPES } from '../../types';
 import type { IUsersRepository } from './interfaceses/users.repository.interface';
 import { ChangeableFields, User } from './user.entity';
 import { UserCreateDto } from './dto/user-create.dto';
+import { UserCreateTelegramDto } from './dto/user-create-from-telegram.dto';
+import { FindUserWhereConditionDto } from './dto/user-where.dto';
 
 @injectable()
 export class UsersRepository implements IUsersRepository {
@@ -24,15 +26,11 @@ export class UsersRepository implements IUsersRepository {
 		return new User(createdUser);
 	};
 
-	async find(email: string) {
+	async find(where: FindUserWhereConditionDto) {
 		const existUser =  await  this.prismaService.client.userModel.findFirst({
-			where: {
-				email: email,
-			},
+			where: where
 		});
-
 		if (!existUser) return null;
-
 		return new User(existUser);
 	};
 
@@ -45,5 +43,18 @@ export class UsersRepository implements IUsersRepository {
 		});
 		if (!existUser) return null;
 		return new User(existUser);
+	};
+
+	async createUserFromTelegram(newUser: UserCreateTelegramDto) {
+		const createdUser = await this.prismaService.client.userModel.create({
+			data: {
+				objectStatusId: newUser.objectStatusId,
+				userRoleId: newUser.userRoleId,
+				telegramUserId: newUser.telegramUserId,
+				telegramUserName: newUser.telegramUserName
+			}
+		});
+		if (!createdUser) return null;
+		return new User(createdUser);
 	};
 };

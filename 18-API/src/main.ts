@@ -64,6 +64,8 @@ import {
 	WarehouseBalancesService,
 } from "./modules/warehouse-balances";
 import { TYPES } from "./types";
+import { TelegramBot } from "./modules/telegram/TelegramBot";
+import { ITelegramBot } from "./modules/telegram/interfaces/ibot.interfaces";
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -118,6 +120,8 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IWarehouseBalancesRepository>(TYPES.WarehouseBalancesRepository)
 		.to(WarehouseBalancesRepository)
 		.inSingletonScope();
+	bind<ITelegramBot>(TYPES.TelegramBot).to(TelegramBot).inSingletonScope();
+	/*bind<ICommand>(TYPES.BotStartCommand).to(BotStartCommand).inSingletonScope();*/
 	bind<App>(TYPES.Application).to(App);
 });
 
