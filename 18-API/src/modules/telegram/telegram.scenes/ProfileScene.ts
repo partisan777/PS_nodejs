@@ -1,13 +1,13 @@
 import { Scenes, Composer } from "telegraf";
-import { CMD_TEXT } from "../cmd_text/cmd_text";
-import { mainMenu, backButtonMenu } from "../buttons/buttons";
+import { CMD_TEXT } from "../telegram.command.text/telegram.command.text";
+import { mainMenu, backButtonMenu } from "../telegram.buttons/telegram.buttons";
 import { ExtContext } from "../interfaces/telegram.interface";
 import { message } from "telegraf/filters";
 import { ITelegramBotScene } from "../interfaces/bot.scene.interface";
 import { IUserService } from "../../users";
 import { inject } from "inversify";
 import { TYPES } from "../../../types";
-
+import { ETelegramSceneNames } from "../enums/enums";
 
 export class ProfileScene extends Scenes.WizardScene<ExtContext> implements ITelegramBotScene {
     public sceneName: string;
@@ -15,12 +15,12 @@ export class ProfileScene extends Scenes.WizardScene<ExtContext> implements ITel
         @inject(TYPES.UserService) private userService: IUserService,
     ) {
         super(
-            'profile',
+            ETelegramSceneNames.profile,
             Composer.on(message('text'), async ctx => {
                 const msg = ctx.message;
             })
         );
-        this.sceneName = 'profile';
+        this.sceneName = ETelegramSceneNames.profile;
         this.init();
     }
 

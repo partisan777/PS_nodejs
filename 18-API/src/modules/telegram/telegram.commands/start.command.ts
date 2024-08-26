@@ -3,7 +3,7 @@ import { TYPES } from "../../../types";
 import { inject, injectable } from "inversify";
 import { ExtContext } from "../interfaces/telegram.interface";
 import { IUserService } from "../../users";
-import { mainMenu } from "../buttons/buttons";
+import { mainMenu } from "../telegram.buttons/telegram.buttons";
 import { Command } from "./command.class";
 
 

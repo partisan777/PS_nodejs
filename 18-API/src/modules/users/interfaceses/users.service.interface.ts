@@ -8,5 +8,5 @@ export interface IUserService {
 	validateUser: (dto: UserLoginDto) => Promise<boolean>;
 	getUserInfo: (where: FindUserWhereConditionDto) => Promise<User | null>;
 	updateUserFields: (id: number, fields: ChangeableFields) => Promise<User | null>;
-	createUserFromTelegram: (id: number, name: string) => Promise<User | null>;
+	createUserFromTelegram: (telegramUserId: number, telegramUserName: string) => Promise<User | null>;
 };

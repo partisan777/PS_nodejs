@@ -1,55 +1,46 @@
 import { Scenes, Composer } from "telegraf";
-import { CMD_TEXT } from "../cmd_text/cmd_text";
-import { mainMenu, backButtonMenu } from "../buttons/buttons";
+import { CMD_TEXT } from "../telegram.command.text/telegram.command.text";
+import { mainMenu, backButtonMenu } from "../telegram.buttons/telegram.buttons";
 import { ExtContext } from "../interfaces/telegram.interface";
 import { message } from "telegraf/filters";
 import { ITelegramBotScene } from "../interfaces/bot.scene.interface";
 import { inject } from "inversify";
 import { TYPES } from "../../../types";
-import { IPromotionService } from "../../promotions";
-import { IUserService } from "../../users";
+import { IItemService } from "../../items";
+import { ETelegramSceneNames } from "../enums/enums";
 
-
-export class PromoScene extends Scenes.WizardScene<ExtContext> implements ITelegramBotScene {
+export class ItemScene extends Scenes.WizardScene<ExtContext> implements ITelegramBotScene {
     public sceneName: string;
     constructor(
-        @inject(TYPES.PromotionService) private promotionServise: IPromotionService,
-        @inject(TYPES.UserService) private userService: IUserService,
+        @inject(TYPES.ItemService) private itemService: IItemService,
     ) {
         super(
-            'promo',
+            ETelegramSceneNames.items,
             Composer.on(message('text'), async ctx => {
                 const msg = ctx.message.text;
-                const userId = ctx.update.message.from.id;
-                const user = await this.userService.getUserInfo({telegramUserId: userId});
-                if (!user) {
-                    ctx.scene.leave();
-                    ctx.reply(`произошла ошибка определения пользователя`)
-                    ctx.reply(`⛳ Ты находишься в меню`)
-                };
-                //@ts-ignore
-                const promo = await this.promotionServise.getPromotions({name: msg}, {}, user);
-                if (promo && promo.length > 0) {
-                    const itemStr = promo.map((item) => {
+                const items = await this.itemService.getItems({name: msg}, {});
+                if (items) {
+                    const itemStr = items.map((item) => {
                         const str =
                         `Наименование: ${item.name}
                          Опиасание: ${item.description}
+                         Цена: ${item.price}
                         `;
                         return str;
                     }).join();
-                    ctx.reply(`Доступны акции:
+                    ctx.reply(`Доступны товары:
                         ${itemStr}
                     `, {
                         ...backButtonMenu
                     });
                 } else {
-                    ctx.reply(`По Вашему запросу промоакций не найдено`, {
+                    ctx.reply(`По Вашему запросу отваров не найдено`, {
                         ...backButtonMenu
                     });
                 }
             })
         );
-        this.sceneName = 'promo';
+        this.sceneName = ETelegramSceneNames.items;
         this.init();
     }
 

@@ -5,15 +5,16 @@ import { TYPES } from "../../types";
 import { ExtContext } from "./interfaces/telegram.interface";
 import { ITelegramBot } from "./interfaces/ibot.interfaces";
 import { IUserService } from "../users";
-import { Command } from "./commands/command.class";
-import { BotStartCommand } from "./commands/start.command";
+import { Command } from "./telegram.commands/command.class";
+import { BotStartCommand } from "./telegram.commands/start.command";
 import { Scenes } from "telegraf";
-import { ProfileScene } from "./scenes/ProfileScene";
-import { CMD_TEXT } from "./cmd_text/cmd_text";
+import { ProfileScene } from "./telegram.scenes/ProfileScene";
+import { CMD_TEXT } from "./telegram.command.text/telegram.command.text";
 import { IItemService } from "../items";
-import { ItemScene } from "./scenes/ItemScene";
-import { PromoScene } from "./scenes/PromoScene";
+import { ItemScene } from "./telegram.scenes/ItemScene";
+import { PromoScene } from "./telegram.scenes/PromoScene";
 import { IPromotionService } from "../promotions";
+import { ETelegramSceneNames } from "./enums/enums";
 
 @injectable()
 export class TelegramBot implements ITelegramBot {
@@ -46,8 +47,11 @@ export class TelegramBot implements ITelegramBot {
         ];
         this.stage = new Scenes.Stage(this.scenes);
         this.bot.use(this.stage.middleware());
-        this.bot.hears(CMD_TEXT.profile, (ctx)=> ctx.scene.enter('profile'));
-        this.bot.hears(CMD_TEXT.items, (ctx)=> ctx.scene.enter('items'));
-        this.bot.hears(CMD_TEXT.promo, (ctx)=> ctx.scene.enter('promo'));
+        this.bot.hears(CMD_TEXT.profile, (ctx)=> ctx.scene.enter(ETelegramSceneNames.profile));
+        this.bot.hears(CMD_TEXT.items, (ctx)=> ctx.scene.enter(ETelegramSceneNames.items));
+        this.bot.hears(CMD_TEXT.promo, (ctx)=> ctx.scene.enter(ETelegramSceneNames.promo));
+    };
+    start() {
+        this.bot.launch()
     };
 };

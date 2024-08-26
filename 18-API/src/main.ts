@@ -64,7 +64,7 @@ import {
 	WarehouseBalancesService,
 } from "./modules/warehouse-balances";
 import { TYPES } from "./types";
-import { TelegramBot } from "./modules/telegram/TelegramBot";
+import { TelegramBot } from "./modules/telegram/telegram.bot";
 import { ITelegramBot } from "./modules/telegram/interfaces/ibot.interfaces";
 
 export interface IBootstrapReturn {

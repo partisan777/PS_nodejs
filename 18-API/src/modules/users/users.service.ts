@@ -48,13 +48,12 @@ export class UserService implements IUserService {
 		return this.usersRepository.updateUserFields(id, fields );
 	};
 
-	async createUserFromTelegram(id: number, name: string) {
-		const where = {telegramUserId: id};
-		const getUserInfo = await this.getUserInfo(where);
+	async createUserFromTelegram(telegramUserId: number, telegramUserName: string) {
+		const getUserInfo = await this.getUserInfo({telegramUserId: telegramUserId});
 		if (getUserInfo) return null;
 		const newUser: UserCreateTelegramDto = {
-			telegramUserName: name,
-			telegramUserId:  id,
+			telegramUserName: telegramUserName,
+			telegramUserId:  telegramUserId,
 			objectStatusId: EObjectStatus.NEW,
 			userRoleId: EUserRoles.USER
 		}

@@ -1,6 +1,6 @@
 // кнопки для бота
 import { Markup } from 'telegraf';
-import { CMD_TEXT } from '../cmd_text/cmd_text';
+import { CMD_TEXT } from '../telegram.command.text/telegram.command.text';
 
 export const mainMenu =
     Markup.keyboard([
