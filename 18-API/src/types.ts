@@ -2,6 +2,8 @@ export const TYPES = {
 	Application: Symbol.for("Application"),
 	ILogger: Symbol.for("ILogger"),
 	ExeptionFilter: Symbol.for("ExeptionFilter"),
+	TelegramBot: Symbol.for('TelegramBot'),
+	BotStartCommand: Symbol.for('BotStartCommand'),
 	ConfigService: Symbol.for("ConfigService"),
 	PrismaService: Symbol.for("PrismaService"),
 	UserController: Symbol.for("UserController"),

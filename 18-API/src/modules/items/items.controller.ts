@@ -15,14 +15,12 @@ import { ItemUpdateSatusDto } from './dto/item-update-status.dto';
 import type { IItemController } from './interfaces/items.controller.interface';
 import type { IItemService } from './interfaces/items.service.interface';
 import type { IFindItemParams, ISortItemParams } from './interfaces/params.interface';
-import { ItemCreateDto } from './dto/item-create.dto';
 
 @injectable()
 export class ItemController extends BaseController implements IItemController {
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILogger,
 		@inject(TYPES.ItemService) private itemService: IItemService,
-		@inject(TYPES.ConfigService) private configService: IConfigService,
 	) {
 		super(loggerService);
 		this.bindRoutes([

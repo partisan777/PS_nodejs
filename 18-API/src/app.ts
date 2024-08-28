@@ -16,6 +16,7 @@ import type { UserController } from './modules/users';
 import type { UserService } from './modules/users';
 import type { WarehouseBalancesController } from './modules/warehouse-balances/warehouse-balance.controller';
 import { TYPES } from './types';
+import { TelegramBot } from './modules/telegram/telegram.bot';
 
 
 @injectable()
@@ -36,7 +37,8 @@ export class App {
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 		@inject(TYPES.UserRolesController) private userRolesController: UserRolesController,
-		@inject(TYPES.WarehouseBalancesController) private warehoseBalancesController: WarehouseBalancesController
+		@inject(TYPES.WarehouseBalancesController) private warehoseBalancesController: WarehouseBalancesController,
+		@inject(TYPES.TelegramBot) private telegramBot: TelegramBot
 	) {
 		this.app = express();
 		this.port = Number(this.configService.get('PORT'));
@@ -68,6 +70,7 @@ export class App {
 		this.useExeptionFilters();
 		await this.prismaService.connect();
 		this.server = this.app.listen(this.port);
+		this.telegramBot.start();
 		this.logger.log(`Сервер запущен на http://localhost:${this.port}`);
 	}
 

@@ -9,13 +9,15 @@ datasource db {
 
 model UserModel {
   id                Int @id @default(autoincrement())
-  login             String
-  email             String
-  password          String
+  login             String?
+  email             String?
+  password          String?
   objectStatus      ObjectStatusModel @relation(fields: [objectStatusId], references: [id])
   objectStatusId    Int @map("object_status_id")
   userRole          UserRoleModel  @relation(fields: [userRoleId], references: [id])
   userRoleId        Int @map("user_role_id")
+  telegramUserId    Int? @map("telegram_user_id")
+  telegramUserName  String? @map("telegram_user_name")
   promotion         PromotionModel[]
   item              ItemModel[]
   warehouseBalances WarehouseBalanceModel[]

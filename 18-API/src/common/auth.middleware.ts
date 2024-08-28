@@ -17,7 +17,7 @@ export class AuthMiddleware implements IMiddleware {
 					if (err) {
 						next();
 					} else if (payload && payload !== "string") {
-						const authUser = await this.userService.getUserInfo(payload.email);
+						const authUser = await this.userService.getUserInfo({email: payload.email});
 						if (!authUser) {
 							next();
 						} else {

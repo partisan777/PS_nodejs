@@ -16,7 +16,7 @@ import { UserRegisterDto } from './dto/user-register.dto';
 import { UserUpdateRoleDto } from './dto/user-update-role.dto';
 import type { IUserController } from './interfaceses/users.controller.interface';
 import type { IUserService } from './interfaceses/users.service.interface';
-import { UserUpdateStatusDto } from './dto/user-update-status';
+import { UserUpdateStatusDto } from './dto/user-update-status.dto';
 
 
 @injectable()
@@ -87,7 +87,8 @@ export class UserController extends BaseController implements IUserController {
 	};
 
 	async info(req: Request, res: Response, next: NextFunction): Promise<void> {
-		const userInfo = await this.userService.getUserInfo(req.userReqData.user);
+		const where = {email: String(req.userReqData.email)};
+		const userInfo = await this.userService.getUserInfo(where);
 		this.ok(res, { email: userInfo?.email, id: userInfo?.id, login: userInfo?.login, userRole: userInfo?.userRoleId });
 	};
 
